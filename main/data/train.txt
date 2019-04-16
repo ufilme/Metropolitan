@@ -1,0 +1,4 @@
+U3_Moosach,Olympia-Einkaufszentrum,Olympiazentrum,Scheidplatz,Munchner-Freiheit,Odeonsplatz,Marienplatz,SendlingerTor,Implerstraste,Obersendling,FurstenriedWest,*_
+U4_Westendstraste,2500,Heimeranplatz,1300,Hauptbahnhof,2700,Karlsplatz,1500,Odeonsplatz,2000,Lehel,2300,MaxWeber-Platz,2100,Arabellapark*
+U5_LaimerPlatz,2200,Westendstraste,2400,Heimeranplatz,2100,Hauptbahnhof,2400,Karlsplatz,2000,Odeonsplatz,2200,Lehel,1800,MaxWeber-Platz,2700,Ostbahnhof,1800,InnsbruckerRing,2000,NeuperlachS�d*
+U6_Garching,1200,Forschungszentrum,1300,Frottmaning,900,Freimann,1500,Studentenstadt,1000,Munchner-Freiheit,1400,Odeonsplatz,1400,Marienplatz,1300,SendlingerTor,1500,Implerstraste,1300,Harras,1600,Klinikum-Grosthadern*
