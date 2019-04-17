@@ -10,6 +10,7 @@ using namespace std;
 // first letter of a station = 17 (for strings = 16)
 //frequency 3,7
 //metropolitan lines 0,2
+//test
 
 struct underground{
   string line, terminal, stations[maxStations];
