@@ -4,6 +4,7 @@
 #include <time.h>
 #include <iomanip>
 #include <stdlib.h>
+#include <string.h>
 #define maxStations 12
 #define metroLines 4
 using namespace std;
@@ -11,37 +12,50 @@ using namespace std;
 //frequency 3,7
 //metropolitan lines 0,2
 
+
 struct underground{
   string line, terminal, stations[maxStations];
   int interval[maxStations-1], number_of_stops, retard;
 } lines[metroLines];
 
 void load(underground lines[]){
-  int lineCounter = 0, lastPos, pos = 0, h = 0, l = 0;
-  char lineDel;
-  string currentLine, allStations;
+  int lineCounter = 0, lastPos, pos = 0, posLastStations = 0, h = 0, l = 0;
+  string lineDel;
+  string currentLine, allStations, tmp;
   ifstream data("data/train.txt");
   while (getline(data, currentLine)){
     lineCounter++;
+    lastPos = 0;
+    pos = 0;
     //------------------------------------------
     //Line Load
     pos = currentLine.find("_", pos);
+    cout << pos << endl;
     lines[h].line = currentLine.substr(0, pos);
     cout << lines[h].line << "  \n";
-    lastPos = pos;
+    lastPos = pos + 1;
+    cout << lastPos << endl;
     //------------------------------------------
     //Stations load
-    pos = currentLine.find("_", 0);
-    allStations = currentLine.substr(0, pos);
+    pos = currentLine.find("_", lastPos);
+    allStations = currentLine.substr(lastPos, pos);
+    cout << allStations << endl;
     pos = 0;
-    while (linedel != "*"){
-        pos = allStations(",", pos);
-        if (allStations[pos + 1] == "*"){
+    while (lineDel != "*"){
+        if (allStations[pos + 1] == '*'){
           cout << "Stations Load Ended Successfully" << endl;
-          break;
+          lineDel = "*";
+        } else {
+        cout << pos << endl;
+        pos = allStations.find(",", posLastStations);
+        cout << pos << endl;
+        tmp = allStations.substr(posLastStations, pos - posLastStations);
+        cout << tmp << "  \n";
+        posLastStations = pos + 1;
+        l++;
         }
-
     }
+    lineDel = "c";
     h++;
   }
   data.close();
