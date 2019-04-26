@@ -1,4 +1,4 @@
-U3_Moosach,Olympia-Einkaufszentrum,Olympiazentrum,Scheidplatz,Munchner-Freiheit,Odeonsplatz,Marienplatz,SendlingerTor,Implerstraste,Obersendling,FurstenriedWest,*_
-U3_Moosach,Olympia-Einkaufszentrum,Olympiazentrum,Scheidplatz,Munchner-Freiheit,Odeonsplatz,Marienplatz,SendlingerTor,Implerstraste,Obersendling,FurstenriedWest,*_
-U3_Moosach,Olympia-Einkaufszentrum,Olympiazentrum,Scheidplatz,Munchner-Freiheit,Odeonsplatz,Marienplatz,SendlingerTor,Implerstraste,Obersendling,FurstenriedWest,*_
-U3_Moosach,Olympia-Einkaufszentrum,Olympiazentrum,Scheidplatz,Munchner-Freiheit,Odeonsplatz,Marienplatz,SendlingerTor,Implerstraste,Obersendling,FurstenriedWest,*_
+U3_Moosach,Olympia-Einkaufszentrum,Olympiazentrum,Scheidplatz,Munchner-Freiheit,Odeonsplatz,Marienplatz,SendlingerTor,Implerstraste,Obersendling,FurstenriedWest,*_500,350,250,250,500,700,800,300,250,500,*_
+U3_Moosach,Olympia-Einkaufszentrum,Olympiazentrum,Scheidplatz,Munchner-Freiheit,Odeonsplatz,Marienplatz,SendlingerTor,Implerstraste,Obersendling,FurstenriedWest,*_500,350,250,250,500,700,800,300,250,500,*_
+U3_Moosach,Olympia-Einkaufszentrum,Olympiazentrum,Scheidplatz,Munchner-Freiheit,Odeonsplatz,Marienplatz,SendlingerTor,Implerstraste,Obersendling,FurstenriedWest,*_500,350,250,250,500,700,800,300,250,500,*_
+U3_Moosach,Olympia-Einkaufszentrum,Olympiazentrum,Scheidplatz,Munchner-Freiheit,Odeonsplatz,Marienplatz,SendlingerTor,Implerstraste,Obersendling,FurstenriedWest,*_500,350,250,250,500,700,800,300,250,500,*_

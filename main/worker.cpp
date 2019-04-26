@@ -14,14 +14,14 @@ using namespace std;
 
 
 struct underground{
-  string line, terminal, stations[maxStations];
+  string line, terminal, stations[maxStations], last;
   int interval[maxStations-1], number_of_stops, retard;
 } lines[metroLines];
 
 void load(underground lines[]){
   int lineCounter = 0, lastPos, pos = 0, posLastStations = 0, h = 0, l = 0;
   string lineDel;
-  string currentLine, allStations, tmp;
+  string currentLine, allStations, allTimes, tmp;
   ifstream data("data/train.txt");
   while (getline(data, currentLine)){
     lineCounter++;
@@ -55,7 +55,20 @@ void load(underground lines[]){
         l++;
         }
     }
-    lineDel = "c";
+    pos = currentLine.find("_", posLastStations);
+    lineDel = "!";
+    lastPos = pos + 1;
+    //------------------------------------------
+    //Time load
+    pos = currentLine.find("_", lastPos);
+    allTimes = currentLine.substr(lastPos, pos - lastPos);
+    cout << allTimes << endl;
+    while (lineDel != "*"){
+        if (allTimes[pos + 1] == '*'){
+            cout << "Interval Load Ended Successfully" << endl;
+        }
+    }
+    //------------------------------------------
     h++;
   }
   data.close();
