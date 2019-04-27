@@ -15,7 +15,7 @@ struct underground{
   int interval[maxStations-1], number_of_stops, retard;
 } lines[metroLines];
 
-//This teorically can clear the console in Windows and Linux
+//This theorically can clear the console in Windows and Linux
 void clrscr(){
     system("@cls||clear");
 }
@@ -28,7 +28,7 @@ void time(){
 void load(underground lines[]){
   int lineCounter = 0, lastPos, pos = 0, posLastStations = 0, posLastTime = 0, h = 0, l = 0, warnflag = 0;
   string lineDel, currentLine, allStations, allTimes;
-  
+
   cout << "[WORKER] Starting Loading";
   for (int i = 0; i < 3; i++){
     cout << ".";
@@ -149,6 +149,7 @@ void load(underground lines[]){
           l++;
         }
     }
+    //Changing line delimiter character to use it again next in the while loop
     lineDel = "!";
     //------------------------------------------
     //Clering last readed database line, just in case
@@ -181,4 +182,12 @@ int main(){
 
   load(lines);
 
+  for (int i = 0; i < metroLines; i++){
+    for (int j = 0; j < maxStations; j++){
+      if (lines[i].stations[j] != "Empty"){
+          cout << lines[i].line << "\t" << lines[i].stations[j] << "\t" << lines[i].interval[j] << endl;
+      }
+    }
+    cout << endl;
+  }
 }
