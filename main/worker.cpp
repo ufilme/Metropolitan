@@ -20,6 +20,16 @@ void clrscr(){
     system("@cls||clear");
 }
 
+void separator(){
+    string underscore;
+    for (int i = 0; i < 51; i++){
+        underscore += "-";
+        cout << "\r" << underscore << flush;
+        usleep(1);
+    }
+    cout << endl;
+}
+
 //This function give us the current time to update the train
 void time(){
   time_t currentTime = time(NULL);
@@ -46,7 +56,7 @@ void load(underground lines[]){
     lineCounter++;
     //------------------------------------------
     //Checking if array is smaller than the database file
-    cout << "--------------------------------------------------" << endl;
+    separator();
     if (lineCounter > metroLines){
       cout << "\nTraceback:" << endl;
       usleep(250000);
@@ -57,7 +67,7 @@ void load(underground lines[]){
       usleep(1000000);
       cout << "\nPress any key to continue..." << endl;
       cin.get();  //waiting for keyboard inpunt
-      cout << "--------------------------------------------------" << endl;
+      separator();
       break;
     }
     cout << "[WORKER] Reading Line Nr: " << lineCounter << endl;
@@ -160,34 +170,38 @@ void load(underground lines[]){
   }
   //------------------------------------------
   //Personalized line of error
+  data.close();
   if (warnflag > 0){
     cout << "[WARN] One or more errors occurred" << endl;
     cout << "[WARN] It's recommended to check the files" << endl;
-    cout << "--------------------------------------------------" << endl;
+    separator();
     cout << "[WORKER] Closing File" << endl;
-    data.close();
     cout << "[WORKER] Anyway... Loading Finished Successfully" << endl;
-    cout << "--------------------------------------------------" << endl;
+    separator();
+    usleep(2000000);
   } else {
-    cout << "--------------------------------------------------" << endl;
+    separator();
     cout << "[WORKER] Closing File" << endl;
-    data.close();
     cout << "[WORKER] Loading Finished Successfully" << endl;
-    cout << "--------------------------------------------------" << endl;
+    separator();
+    usleep(2000000);
   }
 
 }
 
 int main(){
 
+  int tot = 0;
   load(lines);
-
   for (int i = 0; i < metroLines; i++){
     for (int j = 0; j < maxStations; j++){
       if (lines[i].stations[j] != "Empty"){
-          cout << lines[i].line << "\t" << lines[i].stations[j] << "\t" << lines[i].interval[j] << endl;
+        tot += lines[i].interval[j];
+        cout << lines[i].line << "\t" << lines[i].stations[j] << "\t" << lines[i].interval[j] << endl;
       }
     }
+    cout << tot << endl;
+    tot = 0;
     cout << endl;
   }
 }
