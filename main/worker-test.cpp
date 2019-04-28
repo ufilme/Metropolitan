@@ -79,7 +79,7 @@ void print(underground lines[], int interStation[]){
         cout << right << setw(5) << "LINEA" << setw(20) << "ULTIMA STAZIONE" << setw(20) << "PROSSIMA STAZIONE" << setw(20) << "DIREZIONE" << setw(30) << "TEMPO DI ARRIVO STIMATO\n" << endl;
         flag = 1;
       }
-      cout << right << setw(5) << lines[i].line << setw(20) << lines[i].last << setw(20) << lines[i].stations[interStation[i]] << setw(20) << lines[i].terminal << setw(23) << lines[i].diff/3600 << ":" << setw(2) << lines[i].diff/60 << ":" << setw(2) << lines[i].diff%60 << endl;
+      cout << right << setw(5) << lines[i].line << setw(20) << lines[i].last << setw(20) << lines[i].stations[interStation[i]] << setw(20) << lines[i].terminal << setw(20) << lines[i].diff/3600 << setw(2) << ":" <<setw(2) << lines[i].diff/60 << setw(2) << ":" << setw(2) << lines[i].diff%60 << endl;
     }
   }
 }
@@ -313,7 +313,6 @@ void worker(underground lines[], int &controlFlag, int interStation[], int inter
     clrscr();
     selectionSort(lines);
     print(lines, interStation);
-    Sleep(1000);
   }
 }
 
