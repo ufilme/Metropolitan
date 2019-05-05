@@ -248,7 +248,7 @@ void load(underground lines[]){
     cout << "[WARN] It's recommended to check the files" << endl;
     separator();
     cout << "[WORKER] Closing File" << endl;
-    cout << "[WORKER] Anyway... Loading Finished Successfully" << endl;
+    cout << "[WORKER] Anyway... Loading Finished" << endl;
     separator();
     usleep(2000000);
   } else {
