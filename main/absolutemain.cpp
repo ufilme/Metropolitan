@@ -35,9 +35,10 @@ struct display{
 struct readyToHTML
 {
   string lastStation;
+  string firstStation;
   int hourArriving, minArriving;
   string line;
-}htmlReady[4];
+}htmlReady[8];
 
 void wait(int timer){
   #if defined(_WIN32)
@@ -77,7 +78,7 @@ void inizializeStruct(int &errorFlag, HANDLE color){
   int stationCont = 0;
   int mainStationPos[nLines], lineCont = 0;
   string line;
-  ifstream file ("data/train.txt");
+  ifstream file ("data/absolutetrain.txt");
   int pos = 0, staticPos, i = 0, k = 0;
   char posChar;
   cout << "[";
@@ -224,30 +225,28 @@ void coolOutput(HANDLE color){
 
 void workerOutput()
 {
-    bool isReversed;
-    int time[nLines], tmp , reverseTime[nLines], tmpReverse;
-    int k = 0, j = 0;
-    int initialTimeH, initialTimeM;
-    int initialSeconds;
-    int finalTimeH, finalTimeM;
-    int finalSeconds;
-    char c;
-    int hour, min, sec;
-    cout << "Insert the initial time(HH:MM): ";
-    cin >> initialTimeH >> c >> initialTimeM;
-    cout << "Insert the final time(HH:MM): ";
-    cin >> finalTimeH >> c >> finalTimeM;
-    initialSeconds = initialTimeH * 60 * 60 + initialTimeM * 60;
-    finalSeconds = finalTimeH * 60 * 60 + finalTimeM * 60;
+  bool isReversed;
+  int time[nLines], tmp , reverseTime[nLines], tmpReverse;
+  int k = 0, j = 0;
+  int initialTimeH, initialTimeM;
+  int initialSeconds;
+  int finalTimeH, finalTimeM;
+  int finalSeconds;
+  char c;
+  int hour, min, sec;
+  cout << "Insert the initial time(HH:MM): ";
+  cin >> initialTimeH >> c >> initialTimeM;
+  finalTimeH = initialTimeH + 2;
+  finalTimeM = initialTimeM;
+  initialSeconds = initialTimeH * 60 * 60 + initialTimeM * 60;
+  finalSeconds = finalTimeH * 60 * 60 + finalTimeM * 60;
 
-
+  int cont = 0;
 
   while (k != nLines)
   {
     time[k] = normalTime[k];
-    cout << normalTime[k] << endl;
     reverseTime[k] = reversedTime[k];
-    cout << reversedTime[k] << endl;
     if (initialTimeH % 2 == 0)
     {
       isReversed = false;
@@ -255,8 +254,8 @@ void workerOutput()
       {
         isReversed = true;
         reverseTime[k] += 3600;
-        time[k] = tmp + 3600;
-
+        time[k] += 3600;
+        cont++;
       }
     }
     else
@@ -265,8 +264,9 @@ void workerOutput()
       if (reversedTime[k] < initialTimeM * 60)
       {
         time[k] += 3600;
-        reverseTime[k] = tmpReverse + 3600;
+        reverseTime[k] += 3600;
         isReversed = false;
+        cont++;
       }
     }
     for (int i = initialTimeM * 60; i <= (((finalTimeH - initialTimeH) * 60) * 60) + (finalTimeM * 60); i++)
@@ -277,15 +277,11 @@ void workerOutput()
         {
           tmp = time[k];
           hour = time[k]/3600;
-          cout << hour << endl;
-          cout << time[k] << " XDt"<<endl;
     	    time[k] = time[k]%3600;
     	    min = time[k]/60;
-          cout << min << endl;
-          cout << endl;
     	  //  time[k] = time[k]%60;
     	  //  sec = time[k];
-          cout << station[k * nStations].line << " DIREZIONE " << lastStation[k] << " ";
+          cout << station[k * nStations].line << " PROVENIENZA: " << firstStation[k] << " DIREZIONE: " << lastStation[k] << " ";
           if (min < 10)
           {
             cout <<hour + initialTimeH << ":0" << min << endl;
@@ -297,39 +293,46 @@ void workerOutput()
           reverseTime[k] += 3600;
           time[k] = tmp + 3600;
           isReversed = true;
+          htmlReady[cont].firstStation = firstStation[k];
+          htmlReady[cont].lastStation = lastStation[k];
+          htmlReady[cont].hourArriving = hour + initialTimeH;
+          htmlReady[cont].minArriving = min;
+          htmlReady[cont].line = station[k * nStations].line;
+          cont++;
         }
       }
       else
       {
         if (i == reverseTime[k])
+        {
+          tmpReverse = reverseTime[k];
+          hour = reverseTime[k]/3600;
+          reverseTime[k] = reverseTime[k]%3600;
+          min = reverseTime[k]/60;
+          cout << station[k * nStations].line << " PROVENIENZA: " << lastStation[k] << " DIREZIONE: " << firstStation[k] << " ";
+          if (min < 10)
           {
-            tmpReverse = reverseTime[k];
-            hour = reverseTime[k]/3600;
-            cout << hour << endl;
-            cout << reverseTime[k] << " XD"<<endl;
-            reverseTime[k] = reverseTime[k]%3600;
-            min = reverseTime[k]/60;
-            cout << min << endl;
-            cout << endl;
-            //reverseTime[k] = reverseTime[k]%60;
-          //  sec = reverseTime[k];
-            cout << station[k * nStations].line << " DIREZIONEr " << firstStation[k] << " ";
-            if (min < 10)
-            {
-              cout <<hour + initialTimeH << ":0" << min << endl;
-            }
-            else
-            {
-              cout <<hour + initialTimeH << ":" << min << endl;
-            }
-            time[k] += 3600;
-            reverseTime[k] = tmpReverse + 3600;
-            isReversed = false;
+            cout <<hour + initialTimeH << ":0" << min << endl;
           }
+          else
+          {
+            cout <<hour + initialTimeH << ":" << min << endl;
+          }
+          time[k] += 3600;
+          reverseTime[k] = tmpReverse + 3600;
+          isReversed = false;
+          htmlReady[cont].firstStation = lastStation[k];
+          htmlReady[cont].lastStation = firstStation[k];
+          htmlReady[cont].hourArriving = hour + initialTimeH;
+          htmlReady[cont].minArriving = min;
+          htmlReady[cont].line = station[k * nStations].line;
+          cont++;
+        }
       }
     }
     k++;
   }
+  cout << "---------------" << endl;
 }
 
 
@@ -347,7 +350,17 @@ int main(){
     coolOutput(color);
   }
   white(color);
- workerOutput();
+  workerOutput();
+
+  for (int i = 0; i < 8; i++)
+  {
+    cout << htmlReady[i].firstStation << endl;
+    cout << htmlReady[i].lastStation << endl;
+    cout << htmlReady[i].hourArriving << endl;
+    cout << htmlReady[i].minArriving << endl;
+    cout << htmlReady[i].line << endl;
+    cout << endl;
+  }
 
   return 0;
 }
