@@ -4,6 +4,8 @@
 #include <sstream>
 #include <iomanip>
 #include <unistd.h>
+#include <stdlib.h>
+#include <time.h>
 #if defined(_WIN32)
 #include <windows.h>
 #endif
@@ -241,19 +243,16 @@ void coolOutput(HANDLE color){
 //finally the main part of the program
 //this subroutine takes in input a time
 //and outputs each time a train will pass in our station in 2 hours
-void workerOutput()
+void workerOutput(int &initialTimeH, int &initialTimeM)
 {
   bool isReversed;
   int time[nLines], tmp , reverseTime[nLines], tmpReverse;
   int k = 0, j = 0;
-  int initialTimeH, initialTimeM;
   int initialSeconds;
   int finalTimeH, finalTimeM;
   int finalSeconds;
   char c;
   int hour, min, sec;
-  cout << "Insert the initial time(HH:MM): ";
-  cin >> initialTimeH >> c >> initialTimeM;
   //the final time, as I said, is 2 hour after the initial so I just add 2 to the hours
   finalTimeH = initialTimeH + 2;
   finalTimeM = initialTimeM;
@@ -368,14 +367,84 @@ void workerOutput()
   }
 }
 
+void htmlparser(){
+  fstream html("html/index.html");
+  string tab = "      ";
+  html.seekg(392, ios::beg);
+  for (int i = 0; i < 8; i++){
+    html << "    <div class='data'>" << endl;
+    html << tab << "<p class='linefeed'>" << htmlReady[i].line << "</p>" << endl;
+    html << tab << "<p class='linefeed'>" << htmlReady[i].firstStation << "</p>" << endl;
+    html << tab << "<p class='linefeed'>" << htmlReady[i].lastStation << "</p>" << endl;
+    html << tab << "<p class='linefeed'>" << htmlReady[i].hourArriving << ":" << htmlReady[i].minArriving << "</p>" << endl;
+    html << "    </div>" << endl;
+  }
+  html << "  </body>" << endl;
+  html << "</html>" << endl;
+}
+
+void userinput(int &initialTimeH, int &initialTimeM){
+  int flag = 0;
+  string input, tmp;
+
+  while(flag == 0){
+    cout << "Inserire il tempo iniziale: ";
+    getline(cin,input);
+
+    if (input.length() <= 5 || input.length() > 0){
+      tmp += input[0];
+      tmp += input[1];
+      stringstream(tmp) >> initialTimeH;
+      tmp.clear();
+
+      tmp += input[3];
+      tmp += input[4];
+      stringstream(tmp) >> initialTimeM;
+      tmp.clear();
+
+      if (initialTimeH >= 0 && initialTimeH <= 24){
+        if (initialTimeM >= 0 && initialTimeM <= 59){
+          flag = 1;
+        }
+      }
+    }
+  }
+}
+
+void getCurrentTime(int &initialTimeH, int &initialTimeM){
+  string midnight, tmp;
+  int intertime;
+  time_t currentTime;
+
+  currentTime = time(NULL);
+  midnight = ctime(&currentTime);
+
+  midnight = midnight.substr(11,8);
+  cout << midnight << endl;
+
+  tmp += midnight[0];
+  tmp += midnight[1];
+  stringstream(tmp) >> intertime;
+  initialTimeH = intertime;
+  tmp.clear();
+
+  tmp += midnight[3];
+  tmp += midnight[4];
+  stringstream(tmp) >> intertime;
+  initialTimeM = intertime;
+  tmp.clear();
+
+}
 
 int main(){
   inizializeToZero();
-  int errorFlag = 0;
-  HANDLE  color;
+  int errorFlag = 0, updateTime = 5, controlFlag = 0, exitFlag = 0, timeFlag;
+  int initialTimeH, initialTimeM;
+  string input;
+  HANDLE  color = GetStdHandle(STD_OUTPUT_HANDLE);
 
-  color = GetStdHandle(STD_OUTPUT_HANDLE);
   inizializeStruct(errorFlag, color);
+  //DA SISTEMARE
   white(color);
   if (errorFlag == 1){
     SetConsoleTextAttribute(color, 12);
@@ -383,17 +452,60 @@ int main(){
     coolOutput(color);
   }
   white(color);
-  workerOutput();
+  //--------------------------------------
 
-  //this checks if the struct is inizialized correctly
+  /*this checks if the struct is inizialized correctly
   for (int i = 0; i < 8; i++)
   {
-    cout << htmlReady[i].firstStation << endl;
-    cout << htmlReady[i].lastStation << endl;
-    cout << htmlReady[i].hourArriving << endl;
-    cout << htmlReady[i].minArriving << endl;
-    cout << htmlReady[i].line << endl;
+    cout << htmlReady[i].firstStation;
+    cout << htmlReady[i].lastStation;
+    cout << htmlReady[i].hourArriving;
+    cout << htmlReady[i].minArriving;
+    cout << htmlReady[i].line;
     cout << endl;
+  }*/
+
+  cout << "Si vuole usare l'orario attuale per visualizzare i treni?" << endl;
+  cout << "(yes/no)> ";
+  getline(cin, input);
+  if (input == "yes" || input == "y"){
+    timeFlag = 1;
+  }
+  input.clear();
+
+  while (controlFlag == 0){
+
+    if (timeFlag == 1){
+      getCurrentTime(initialTimeH, initialTimeM);
+      timeFlag = 0;
+    } else {
+      userinput(initialTimeH, initialTimeM);
+    }
+
+    workerOutput(initialTimeH, initialTimeM);
+    htmlparser();
+    updateTime = 10;
+    while (exitFlag == 0){
+      cout << "Running..." << endl;
+      cout << "Next update in: " << updateTime << endl;
+      cout << "To change data use SPACE" << endl;
+      if (GetKeyState(VK_SPACE)){
+        exitFlag = 1;
+      }
+      wait(1000);
+      clrscr();
+      updateTime--;
+      if (updateTime == 0){
+        updateTime = 10;
+      }
+    }
+    cout << "Si vuole inserire il tempo manualmente?" << endl;
+    cout << "> ";
+    getline(cin, input);
+    if (input == "no" || input == "n"){
+      timeFlag = 1;
+    }
+    exitFlag = 0;
   }
 
   return 0;
