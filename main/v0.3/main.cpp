@@ -67,7 +67,8 @@ void clrscr(){
   #endif
 }
 
-//colors that we used for the errors
+//------------------------------------------
+//Colors
 void white(HANDLE color){
   SetConsoleTextAttribute(color, 15);
 }
@@ -80,109 +81,203 @@ void green(HANDLE color){
 void red(HANDLE color){
   SetConsoleTextAttribute(color, 12);
 }
+//------------------------------------------
+
+//------------------------------------------
+//Line separator
+void separator(){
+    string underscore;
+    for (int i = 0; i < 51; i++){
+        underscore += "-";
+        cout << "\r" << underscore << flush;
+    }
+    cout << endl;
+}
+//------------------------------------------
+
+void workerprint(HANDLE color){
+  cout << left << setw(2) << "[";
+  green(color);
+  cout << left << setw(7) << "WORKER";
+  white(color);
+  cout << "] ";
+}
+
+void checkfiles(int &errorFlag, HANDLE color){
+  string tmp;
+  ifstream file ("data/train.txt");
+  //------------------------------------------
+  //Checking File textes
+  for (int i = 0; i < 8; i++){
+    if (tmp.length() == 3){
+      tmp.clear();
+    }
+    workerprint(color);
+    cout << "Starting Checking Files" << endl;
+    if (i == 0){
+      wait(2000);
+    }
+    cout << left << setw(2) << "[";
+    if (i % 2 != 0){
+      yellow(color);
+    } else {
+      white(color);
+    }
+    cout << left << setw(7) << "WORKER";
+    white(color);
+    cout << "] ";
+    cout << "Checking File";
+    tmp += ".";
+    cout << tmp;
+    wait(150);
+    clrscr();
+  }
+  tmp += ".";
+  workerprint(color);
+  cout << "Starting Checking Files" << endl;
+  cout << left << setw(2) << "[";
+  cout << left << setw(7) << "WORKER";
+  white(color);
+  cout << "] ";
+  cout << "Checking File" << tmp << endl;
+  //------------------------------------------
+  if (file.is_open()){
+    workerprint(color);
+    cout << "Checking Done Successfully\n";
+    white(color);
+  } else {
+    cout << left << setw(2) << "[";
+    red(color);
+    cout << left << setw(7) << "ERROR";
+    white(color);
+    cout << "] ";
+    red(color);
+    cout << "Database File Not Found\n";
+    wait(1000);
+    errorFlag = 404;
+    white(color);
+  }
+  //------------------------------------------
+}
 
 //subroutine that inizialize the struct with the file
 void inizializeStruct(int &errorFlag, HANDLE color){
-  int stationCont = 0;
+  int stationCont = 0, currentLine = 0, flag = 0;
   int mainStationPos[nLines], lineCont = 0;
   string line;
-  //file directory
-  ifstream file ("data/absolutetrain.txt");
   int pos = 0, staticPos, i = 0, k = 0;
   char posChar;
-  cout << "[";
-  yellow(color);
-  cout << "WORKER";
-  white(color);
-  cout << "] ";
-  cout << "Checking File";
+
+  cout << left << setw(2) << "[";
+  cout << left << setw(7) << "WORKER";
+  cout << "] Starting Loading";
   for (int i = 0; i < 3; i++){
     cout << ".";
-    usleep(250000);
+    wait(150);
   }
-  wait(500);
-  clrscr();
-  //check if the file opened correctly
-  if (file.is_open()){
-    cout << "[";
-    green(color);
-    cout << "WORKER";
-    white(color);
-    cout << "] ";
-    cout << "Checking Done Successfully\n";
-    while (getline (file, line)){
-      //inizializing lines
-      for (int j = 0; j < nStations; j++){
-        pos = line.find('_');
-        station[j + i].line = line.substr(0, pos);
-      }
-      //inizialiazing stations
-      for (int j = 0; j < nStations; j++)
-      {
+  cout << endl;
+  workerprint(color);
+  cout << "Reading File" << endl;
+  ifstream file ("data/train.txt");
+  while (getline (file, line)){
+    //------------------------------------------
+    //Incrementing line counter of file lines
+    currentLine++;
+    //------------------------------------------
+    //Checking if array is smaller than the database file
+    separator();
+    if (currentLine > nLines){
+      red(color);
+      cout << "\nTraceback:" << endl;
+      wait(250);
+      errorFlag = 1; //setting the errorFlag to 1 to get personalized messagge at the end of loading
+      cout << "\tIt seems that the database hold more train lines than the size of the array" << endl;
+      cout << "\tThis means that not all the lines are probably loaded" << endl;
+      cout << "\tCheck the file or correct the array size" << endl;
+      wait(1000);
+      white(color);
+      cout << "\nPress any key to continue..." << endl;
+      cin.get();  //waiting for keyboard inpunt
+      separator();
+      break;
+    }
+    workerprint(color);
+    cout << "Reading Line Nr: " << currentLine << endl;
+    wait(200);
+    workerprint(color);
+    cout << "Loading Line Name" << endl;
+    wait(50);
+    //inizializing lines
+    for (int j = 0; j < nStations; j++){
+      pos = line.find('_');
+      station[j + i].line = line.substr(0, pos);
+    }
+    workerprint(color);
+    cout << "Starting Loading of All Stations" << endl;
+    wait(200);
+    //inizialiazing stations
+    for (int j = 0; j < nStations; j++){
+      posChar = line[pos];
+      staticPos = pos + 1;
+      while (posChar != '*'){
         posChar = line[pos];
-        staticPos = pos + 1;
-        while (posChar != '*')
-        {
-          posChar = line[pos];
-          if (posChar == ',')
-          {
-              station[j + i].name = line.substr(staticPos, pos - staticPos);
-              //saves the first station of each line
-              if (j == 0)
-              {
-                firstStation[stationCont] = station[j + i].name;
-                stationCont++;
-              }
-              //saves the position of the stations that we defined
-              if (station[j + i].name == mainStation)
-              {
-                mainStationPos[lineCont] = j + i;
-                lineCont++;
-              }
-              staticPos = pos + 1;
-              j++;
+        if (posChar == ','){
+          station[j + i].name = line.substr(staticPos, pos - staticPos);
+          //saves the first station of each line
+          if (j == 0){
+            firstStation[stationCont] = station[j + i].name;
+            stationCont++;
+          }
+          //saves the position of the stations that we defined
+          if (station[j + i].name == mainStation){
+            mainStationPos[lineCont] = j + i;
+            lineCont++;
+          }
+          staticPos = pos + 1;
+          j++;
           }
           pos++;
         }
         pos++;
         posChar = line[pos];
+        workerprint(color);
+        cout << "Stations Loading Ended Successfully" << endl;
+        wait(50);
+        workerprint(color);
+        cout << "Starting Loading of All Intervals Time" << endl;
+        wait(200);
         //inizializing times
-        for (int j = 0; j < nStations; j++)
-        {
-            staticPos = pos;
-            while (posChar != '*')
-            {
-              posChar = line[pos];
-              if (posChar == ',')
-              {
-                  stringstream(line.substr(staticPos, pos - staticPos)) >> station[j + i].time;
-                  totalTime[k] += station[j + i].time;
-                  //time to get from the start to the station where we are
-                  if ( j + i < mainStationPos[k])
-                  {
-                    normalTime[k] += station[j + i].time;
-                  }
-                  else  //time to get from the end to the station where we are
-                  {
-                    reversedTime[k] += station[j + i].time;
-                  }
-                  staticPos = pos + 1;
-                  j++;
-
+        for (int j = 0; j < nStations; j++){
+          staticPos = pos;
+          while (posChar != '*'){
+            posChar = line[pos];
+            if (posChar == ','){
+              stringstream(line.substr(staticPos, pos - staticPos)) >> station[j + i].time;
+              totalTime[k] += station[j + i].time;
+              //time to get from the start to the station where we are
+              if ( j + i < mainStationPos[k]){
+                normalTime[k] += station[j + i].time;
+              } else { //time to get from the end to the station where we are
+                reversedTime[k] += station[j + i].time;
               }
-              pos++;
+              staticPos = pos + 1;
+              j++;
             }
+            pos++;
+          }
         }
+        workerprint(color);
+        cout << "Intervals Loading Ended Successfully" << endl;
+        wait(50);
       }
       k++;
       i += nStations;
     }
     file.close();
-    int k = 0;
+    k = 0;
     //saves the last stations of each line
     for (int i = 0; i < nLines * nStations - 1; i++)
     {
-      cout << i << endl;
       if ((station[i].name != "Empty") && (station[i + 1].name == "Empty"))
       {
         lastStation[k] = station[i].name;
@@ -190,36 +285,6 @@ void inizializeStruct(int &errorFlag, HANDLE color){
       }
     }
   }
-  else //some errors messages
-  {
-    cout << "[";
-    red(color);
-    cout << "WORKER";
-    white(color);
-    cout << "] ";
-    red(color);
-    cout << "Database File not found\n";
-    wait(1000);
-    white(color);
-    cout << "[";
-    red(color);
-    cout << "WORKER";
-    white(color);
-    cout << "] ";
-    red(color);
-    cout << "Cannot continue\n";
-    wait(1000);
-    white(color);
-    cout << "[";
-    red(color);
-    cout << "WORKER";
-    white(color);
-    cout << "] ";
-    red(color);
-    cout << "Aborting...\n";
-    errorFlag = 1;
-  }
-}
 
 //an output to check the struct inizialized with the file
 //it doesnt output the "Empty" names of course
@@ -443,15 +508,58 @@ int main(){
   string input;
   HANDLE  color = GetStdHandle(STD_OUTPUT_HANDLE);
 
+  checkfiles(errorFlag, color);
+  if (errorFlag == 404){
+    cout << left << setw(2) << "[";
+    red(color);
+    cout << left << setw(7) << "ERROR";
+    white(color);
+    cout << "]";
+    red(color);
+    cout <<" Fatal Error" << endl;
+    white(color);
+    cout << left << setw(2) << "[";
+    red(color);
+    cout << left << setw(7) << "ERROR";
+    white(color);
+    cout << "]";
+    red(color);
+    cout << " Impossible to Continue" << endl;
+    white(color);
+    cout << "\nPress any key to close..." << endl;
+    cin.get();
+    exit(EXIT_FAILURE);
+  }
   inizializeStruct(errorFlag, color);
-  //DA SISTEMARE
-  white(color);
   if (errorFlag == 1){
-    SetConsoleTextAttribute(color, 12);
+    cout << left << setw(2) << "[";
+    yellow(color);
+    cout << left << setw(7) << "WARN";
+    white(color);
+    cout << "] One or more errors occurred" << endl;
+    cout << left << setw(2) << "[";
+    yellow(color);
+    cout << left << setw(7) << "WARN";
+    white(color);
+    cout << "] It's recommended to check the files" << endl;
+    separator();
+    workerprint(color);
+    cout << "Closing File" << endl;
+    workerprint(color);
+    cout << "Anyway... Loading Finished" << endl;
+    separator();
+    wait(2000);
   } else {
-    coolOutput(color);
+    separator();
+    workerprint(color);
+    cout << "Closing File" << endl;
+    workerprint(color);
+    cout << "Loading Finished Successfully" << endl;
+    separator();
+    wait(2000);
   }
   white(color);
+
   //--------------------------------------
 
   /*this checks if the struct is inizialized correctly
@@ -464,7 +572,7 @@ int main(){
     cout << htmlReady[i].line;
     cout << endl;
   }*/
-
+  clrscr();
   cout << "Si vuole usare l'orario attuale per visualizzare i treni?" << endl;
   cout << "(yes/no)> ";
   getline(cin, input);
@@ -492,13 +600,12 @@ int main(){
       cout << htmlReady[i].line;
       cout << endl;
     }
-    cin.get();
     htmlparser();
     updateTime = 10;
     while (exitFlag == 0){
       cout << "Running..." << endl;
       cout << "Next update in: " << updateTime << endl;
-      cout << "To change data use SPACE" << endl;
+      cout << "To change data hold SPACE" << endl;
       if (GetKeyState(VK_SPACE)){
         exitFlag = 1;
       }
