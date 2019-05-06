@@ -279,7 +279,7 @@ void workerOutput(int &initialTimeH, int &initialTimeM)
         isReversed = true;
         reverseTime[k] += 3600;
         time[k] += 3600;
-        cont++;
+        //cont++;
       }
     }
     else
@@ -291,7 +291,7 @@ void workerOutput(int &initialTimeH, int &initialTimeM)
         time[k] += 3600;
         reverseTime[k] += 3600;
         isReversed = false;
-        cont++;
+        //cont++;
       }
     }
     for (int i = initialTimeM * 60; i <= (((finalTimeH - initialTimeH) * 60) * 60) + (finalTimeM * 60); i++)
@@ -483,6 +483,16 @@ int main(){
     }
 
     workerOutput(initialTimeH, initialTimeM);
+    for (int i = 0; i < 8; i++)
+    {
+      cout << htmlReady[i].firstStation;
+      cout << htmlReady[i].lastStation;
+      cout << htmlReady[i].hourArriving;
+      cout << htmlReady[i].minArriving;
+      cout << htmlReady[i].line;
+      cout << endl;
+    }
+    cin.get();
     htmlparser();
     updateTime = 10;
     while (exitFlag == 0){
