@@ -1,0 +1,4 @@
+WWT1_Belgrado,Istanbul,San Antonio,Tunisi,Cologna,Rio de Janeiro,Monaco,San Diego,Berlino,Santa Cruz,Empty,Empty,*_600,120,480,180,420,840,480,180,300,*_
+WWT2_Barcellona,Hiroshima,Bangkok,Dubai,Shangai,NewYork,Empty,Empty,Empty,Empty,Empty,Empty,*_1380,1320,360,300,240,*_
+WWT3_Milano,Pyongyang,Casa Blanca,Casa Pound,Bucharest,Sydney,Lagos,Chicago,Empty,Empty,Empty,Empty,*_50,400,240,666,414,360,1020,*_
+WWT4_Santiago,Tokyo,Parigi,Cuba,Mosca,Roma,Taipei,Dallas,Tripoli,Caracas,Porto Rico,Madrid,*_50,200,200,350,250,500,400,300,300,250,500,*_
