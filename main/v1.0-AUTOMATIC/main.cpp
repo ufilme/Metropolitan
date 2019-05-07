@@ -13,15 +13,43 @@
 #define nStations 13
 
 //define the station where the programs runs
-#define mainStation "San Diego"
 
 using namespace std;
 
 //global variables that i could've put in the main
+string mainStation;
 int totalTime[nLines], normalTime[nLines], reversedTime[nLines], mainStationPos[nLines];
 string firstStation[nLines], lastStation[nLines];
 
 //subroutine that inizialize the global variables to 0
+
+void inizializeMainStaion()
+{
+  string line;
+  std::ifstream fileMainStation;
+  fileMainStation.open("train.txt");
+  if(fileMainStation.is_open())
+  {
+    bool isEmpty(true);
+    string lines;
+    while( fileMainStation >> lines )
+    {
+      isEmpty = false;
+    }
+    if (isEmpty == true)
+    {
+      cout << "EMPTY AAAAAAAAAAAAAA " << endl;
+    }
+
+    while ( getline (fileMainStation, line) )
+    {
+      mainStation = line;
+      cout << "aaaa" << endl;
+    }
+    fileMainStation.close();
+  }
+}
+
 void inizializeToZero(){
   for (int i = 0; i < nLines; i++)
   {
@@ -116,6 +144,7 @@ void selectionSort(){
 }
 
 void checkfiles(int &errorFlag, HANDLE color){
+  int flag = 0;
   string tmp;
   ifstream file ("data/train.txt");
   //------------------------------------------
@@ -154,10 +183,28 @@ void checkfiles(int &errorFlag, HANDLE color){
   cout << "Checking File" << tmp << endl;
   //------------------------------------------
   if (file.is_open()){
-    workerprint(color);
-    cout << "Checking Done Successfully\n";
-    white(color);
+    ifstream file ("html/index.txt");
+    if (file.is_open()){
+      ifstream file ("html/style.css");
+      if (file.is_open()){
+        ifstream file ("html/font.ttf");
+  if (file.is_open()){
+            workerprint(color);
+            cout << "Checking Done Successfully\n";
+            white(color);
+          } else {
+            flag = 1;
+          }
+      } else {
+        flag = 1;
+      }
+    } else {
+      flag = 1;
+    }
   } else {
+    flag = 1;
+  }
+  if (flag == 1){
     cout << left << setw(2) << "[";
     red(color);
     cout << left << setw(7) << "ERROR";
@@ -169,8 +216,8 @@ void checkfiles(int &errorFlag, HANDLE color){
     errorFlag = 404;
     white(color);
   }
-  //------------------------------------------
 }
+  //------------------------------------------
 
 //subroutine that inizialize the struct with the file
 void inizializeStruct(int &errorFlag, HANDLE color){
@@ -247,7 +294,6 @@ void inizializeStruct(int &errorFlag, HANDLE color){
           //saves the position of the stations that we defined
           if (station[j + i].name == mainStation){
             mainStationPos[lineCont] = j + i;
-            //LINECONT++ OLD WAS HERE REMEMBER JUST IN CASE <----------------------------------------------
           }
           staticPos = pos + 1;
           j++;
@@ -274,7 +320,7 @@ void inizializeStruct(int &errorFlag, HANDLE color){
               if ( j + i < mainStationPos[k]){
                 normalTime[k] += station[j + i].time;
               }
-              else if (mainStationPos[k] == -1) //REMEMEBER -------------------------------------------------------------------------------------
+              else if (mainStationPos[k] == -1)
               {
                 normalTime[k] = -1;
                 reversedTime[k] = -1;
@@ -334,7 +380,6 @@ void workerOutput(int &initialTimeH, int &initialTimeM){
 
   while (k != nLines)
   {
-    cout << mainStationPos[k] << endl;
     if (mainStationPos[k] != -1)
     {
 
@@ -536,6 +581,7 @@ void getCurrentTime(int &initialTimeH, int &initialTimeM, string &midnight){
 }
 
 int main(){
+  inizializeMainStaion();
   int errorFlag = 0, updateTime = 5, controlFlag = 0, exitFlag = 0, flag = 0;
   int initialTimeH, initialTimeM;
   string input, time;
