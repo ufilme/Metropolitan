@@ -13,7 +13,7 @@
 #define nStations 13
 
 //define the station where the programs runs
-#define mainStation "Cuba"
+#define mainStation "San Diego"
 
 using namespace std;
 
@@ -520,7 +520,6 @@ void getCurrentTime(int &initialTimeH, int &initialTimeM, string &midnight){
   midnight = ctime(&currentTime);
 
   midnight = midnight.substr(11,8);
-  cout << midnight << endl;
 
   tmp += midnight[0];
   tmp += midnight[1];
@@ -604,18 +603,6 @@ int main(){
   system("cd html && index.html");
 
   while (controlFlag == 0){
-
-    for (int i = 0; i < 8; i++)
-    {
-      cout << htmlReady[i].firstStation;
-      cout << htmlReady[i].lastStation;
-      cout << htmlReady[i].hourArriving;
-      cout << htmlReady[i].minArriving;
-      cout << htmlReady[i].line;
-      cout << endl;
-    }
-    cin.get();
-    htmlparser(time);
 
     while (exitFlag == 0){
       getCurrentTime(initialTimeH, initialTimeM, time);
