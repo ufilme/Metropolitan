@@ -13,7 +13,7 @@
 #define nStations 13
 
 //define the station where the programs runs
-#define mainStation "San Diego"
+#define mainStation "Casa Blanca"
 
 using namespace std;
 
@@ -429,9 +429,11 @@ void workerOutput(int &initialTimeH, int &initialTimeM){
   }
 }
 
-void htmlparser(){
+void htmlparser(string time){
   fstream html("html/index.html");
   string tab = "      ";
+  string structTime, hour, minute;
+  stringstream ss;
   html.seekg(498, ios::beg);
   for(int i = 0; i < 1000; i++){
     html << " " << endl;
@@ -439,28 +441,50 @@ void htmlparser(){
   selectionSort();
   html.seekg(498, ios::beg);
   for (int i = 0; i < 8; i++){
-    html << "    <div class='data'>" << endl;
-    html << tab << "<p class='linefeed-line'>" << htmlReady[i].line << "</p>" << endl;
-    html << tab << "<p class='linefeed-dir'>" << htmlReady[i].direction << "</p>" << endl;
-    html << tab << "<p class='linefeed-start'>" << htmlReady[i].firstStation << "</p>" << endl;
-    html << tab << "<p class='linefeed-end'>" << htmlReady[i].lastStation << "</p>" << endl;
-    if (htmlReady[i].hourArriving < 10 && htmlReady[i].minArriving < 10){
-      html << tab << "<p class='linefeed-clock'>0" << htmlReady[i].hourArriving << ":0" << htmlReady[i].minArriving << "</p>" << endl;
-    } else if (htmlReady[i].minArriving < 10){
-      html << tab << "<p class='linefeed-clock'>" << htmlReady[i].hourArriving << ":0" << htmlReady[i].minArriving << "</p>" << endl;
-    } else if (htmlReady[i].hourArriving < 10){
-      html << tab << "<p class='linefeed-clock'>0" << htmlReady[i].hourArriving << ":" << htmlReady[i].minArriving << "</p>" << endl;
-    } else {
-      html << tab << "<p class='linefeed-clock'>" << htmlReady[i].hourArriving << ":" << htmlReady[i].minArriving << "</p>" << endl;
+    if (htmlReady[i].sec != 0){
+      html << "    <div class='data'>" << endl;
+      html << tab << "<p class='linefeed-line'>" << htmlReady[i].line << "</p>" << endl;
+      html << tab << "<p class='linefeed-dir'>" << htmlReady[i].direction << "</p>" << endl;
+      html << tab << "<p class='linefeed-start'>" << htmlReady[i].firstStation << "</p>" << endl;
+      html << tab << "<p class='linefeed-end'>" << htmlReady[i].lastStation << "</p>" << endl;
+      time = time.substr(0,5);
+      ss << htmlReady[i].hourArriving;
+      hour = ss.str();
+      ss.str("");
+      ss << htmlReady[i].minArriving;
+      minute = ss.str();
+      ss.str("");
+      cout << hour << minute << endl;
+      if (htmlReady[i].hourArriving < 10 && htmlReady[i].minArriving < 10){
+        structTime = "0" + hour + ":" + "0" + minute;
+      } else if (htmlReady[i].minArriving < 10){
+        structTime = hour + ":" + "0" + minute;
+      } else if (htmlReady[i].hourArriving < 10){
+        structTime = "0" + hour + ":" + minute;
+      } else {
+        structTime = hour + ":" + minute;
+      }
+      cout << time << " " << structTime << endl;
+      if (time == structTime){
+        html << tab << "<p class='linefeed-clock'>" << "IN STAZIONE" << "</p>" << endl;
+      } else if (htmlReady[i].hourArriving < 10 && htmlReady[i].minArriving < 10){
+        html << tab << "<p class='linefeed-clock'>0" << htmlReady[i].hourArriving << ":0" << htmlReady[i].minArriving << "</p>" << endl;
+      } else if (htmlReady[i].minArriving < 10){
+        html << tab << "<p class='linefeed-clock'>" << htmlReady[i].hourArriving << ":0" << htmlReady[i].minArriving << "</p>" << endl;
+      } else if (htmlReady[i].hourArriving < 10){
+        html << tab << "<p class='linefeed-clock'>0" << htmlReady[i].hourArriving << ":" << htmlReady[i].minArriving << "</p>" << endl;
+      } else {
+        html << tab << "<p class='linefeed-clock'>" << htmlReady[i].hourArriving << ":" << htmlReady[i].minArriving << "</p>" << endl;
+      }
+      html << "    </div>" << endl;
     }
-    html << "    </div>" << endl;
-  }
-  html << "  </body>" << endl;
-  html << "</html>" << endl;
+    html << "  </body>" << endl;
+    html << "</html>" << endl;
+    }
 }
 
-void getCurrentTime(int &initialTimeH, int &initialTimeM){
-  string midnight, tmp;
+void getCurrentTime(int &initialTimeH, int &initialTimeM, string &midnight){
+  string tmp;
   int intertime;
   time_t currentTime;
 
@@ -487,7 +511,7 @@ void getCurrentTime(int &initialTimeH, int &initialTimeM){
 int main(){
   int errorFlag = 0, updateTime = 5, controlFlag = 0, exitFlag = 0, flag = 0;
   int initialTimeH, initialTimeM;
-  string input;
+  string input, time;
   HANDLE  color = GetStdHandle(STD_OUTPUT_HANDLE);
 
   inizializeToZero();
@@ -545,19 +569,20 @@ int main(){
 
   clrscr();
 
-  getCurrentTime(initialTimeH, initialTimeM);
+  getCurrentTime(initialTimeH, initialTimeM, time);
   workerOutput(initialTimeH, initialTimeM);
-  htmlparser();
+  htmlparser(time);
 
   system("D:/Utente/Desktop/inf/c++/Metropolitan/main/v1.0-AUTOMATIC/html/index.html");
 
   while (controlFlag == 0){
 
     workerOutput(initialTimeH, initialTimeM);
-    htmlparser();
+    htmlparser(time);
 
     updateTime = 5;
     while (exitFlag == 0){
+      cout << time << endl;
       cout << "Running..." << endl;
       cout << "Next update in: " << updateTime << endl;
       cout << "To exit hold SPACE" << endl;
@@ -569,9 +594,9 @@ int main(){
       clrscr();
       updateTime--;
       if (updateTime == 0){
-        getCurrentTime(initialTimeH, initialTimeM);
+        getCurrentTime(initialTimeH, initialTimeM, time);
         workerOutput(initialTimeH, initialTimeM);
-        htmlparser();
+        htmlparser(time);
         updateTime = 5;
       }
     }
