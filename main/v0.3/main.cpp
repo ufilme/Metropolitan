@@ -46,6 +46,7 @@ struct readyToHTML
   string firstStation;
   int hourArriving, minArriving;
   string line;
+  string direction;
 }htmlReady[8];
 
 //subroutine that detect the O.S. and then put to sleep the program for 1 second
@@ -395,6 +396,7 @@ void workerOutput(int &initialTimeH, int &initialTimeM)
           htmlReady[cont].hourArriving = hour + initialTimeH;
           htmlReady[cont].minArriving = min;
           htmlReady[cont].line = station[k * nStations].line;
+          htmlReady[cont].direction = "RIGHT";
           cont++;
         }
       }
@@ -424,6 +426,7 @@ void workerOutput(int &initialTimeH, int &initialTimeM)
           htmlReady[cont].hourArriving = hour + initialTimeH;
           htmlReady[cont].minArriving = min;
           htmlReady[cont].line = station[k * nStations].line;
+          htmlReady[cont].direction = "LEFT";
           cont++;
         }
       }
@@ -560,18 +563,6 @@ int main(){
   }
   white(color);
 
-  //--------------------------------------
-
-  /*this checks if the struct is inizialized correctly
-  for (int i = 0; i < 8; i++)
-  {
-    cout << htmlReady[i].firstStation;
-    cout << htmlReady[i].lastStation;
-    cout << htmlReady[i].hourArriving;
-    cout << htmlReady[i].minArriving;
-    cout << htmlReady[i].line;
-    cout << endl;
-  }*/
   clrscr();
   cout << "Si vuole usare l'orario attuale per visualizzare i treni?" << endl;
   cout << "(yes/no)> ";
@@ -591,6 +582,8 @@ int main(){
     }
 
     workerOutput(initialTimeH, initialTimeM);
+    /*
+    //we used this for some tests
     for (int i = 0; i < 8; i++)
     {
       cout << htmlReady[i].firstStation;
@@ -598,8 +591,11 @@ int main(){
       cout << htmlReady[i].hourArriving;
       cout << htmlReady[i].minArriving;
       cout << htmlReady[i].line;
+      cout << htmlReady[i].direction;
       cout << endl;
     }
+    cin.get();
+    */
     htmlparser();
     updateTime = 10;
     while (exitFlag == 0){
