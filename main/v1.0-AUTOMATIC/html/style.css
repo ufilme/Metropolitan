@@ -1,0 +1,95 @@
+@font-face {
+  font-family: 'highspeed';
+  src: url('HIGHSPEED.TTF');
+}
+
+body {
+  background-color: black;
+  margin: 0px;
+  font-family: Arial;
+  color: #f47721;
+  font-family: 'highspeed', monospace;
+}
+
+.center{
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+}
+
+.title{
+  margin-left: -25%;
+  margin-right: -25%;
+}
+
+.line{
+  margin-top: 5%;
+  margin-right: 5%;
+  font-size: 200%;
+  float: left;
+}
+
+.data{
+  clear:left;
+  font-size: 150%;
+}
+
+.linefeed{
+  margin-top: 3%;
+  margin-right: 10%;
+  float: left;
+}
+
+h1{
+  font-size: 900%;
+  color: #f47721;
+}
+
+*,
+*::after,
+*::before {
+  margin: 0;
+  padding: 0;
+  box-sizing: inherit;
+}
+
+.container {
+  width: 10%;
+  height: 100%;
+  margin-top: 3%;
+  margin-left: 40%;
+  margin-right: 40%;
+  position: relative;
+}
+
+.searchbar {
+  font-size: 100%;
+  width: 200%;
+  height: 1%;
+  border: none;
+  outline: none;
+  border-radius: 10rem;
+  box-shadow: 0 1rem 2rem rgba(black, .1);
+  padding: 5%;
+  position: relative;
+  transition: all .2s;
+  transition-delay: .1s;
+}
+
+.button {
+  height: 70%;
+  position: absolute;
+  top: 10%;
+  left: 180%;
+  transition: all .2s;
+  transition-delay: .1s;
+}
+
+.button:hover {
+  cursor: pointer;
+}
+
+.searchbar::placeholder {
+  opacity: .5;
+}

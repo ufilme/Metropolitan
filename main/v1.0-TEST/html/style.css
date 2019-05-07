@@ -1,0 +1,26 @@
+body {
+  background-color: black;
+  margin: 0px;
+  font-family: Arial;
+  color: white;
+}
+
+.line{
+  margin-top: 1%;
+  margin-right: 5%;
+  float: left;
+}
+
+.data{
+  clear:left;
+}
+
+.linefeed{
+  margin-top: 1%;
+  margin-right: 10%;
+  float: left;
+}
+
+h1{
+  margin-left: 15%;
+}
