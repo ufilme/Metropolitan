@@ -601,11 +601,10 @@ int main(){
   workerOutput(initialTimeH, initialTimeM);
   htmlparser(time);
 
-  system("D:/Utente/Desktop/inf/c++/Metropolitan/main/v1.0-AUTOMATIC/html/index.html");
+  system("cd html && index.html");
 
   while (controlFlag == 0){
 
-    workerOutput(initialTimeH, initialTimeM);
     for (int i = 0; i < 8; i++)
     {
       cout << htmlReady[i].firstStation;
@@ -618,16 +617,12 @@ int main(){
     cin.get();
     htmlparser(time);
 
-    updateTime = 5;
     while (exitFlag == 0){
+      getCurrentTime(initialTimeH, initialTimeM, time);
       cout << time << endl;
       cout << "Running..." << endl;
       cout << "Next update in: " << updateTime << endl;
-      cout << "To exit hold SPACE" << endl;
-      if (GetKeyState(VK_SPACE)){
-        exitFlag = 1;
-        controlFlag = 1;
-      }
+      cout << "To exit press Ctrl+C" << endl;
       wait(1000);
       clrscr();
       updateTime--;
