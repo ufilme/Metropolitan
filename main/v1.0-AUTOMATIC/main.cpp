@@ -13,12 +13,12 @@
 #define nStations 13
 
 //define the station where the programs runs
-#define mainStation "Casa Blanca"
+#define mainStation "Cuba"
 
 using namespace std;
 
 //global variables that i could've put in the main
-int totalTime[nLines], normalTime[nLines], reversedTime[nLines];
+int totalTime[nLines], normalTime[nLines], reversedTime[nLines], mainStationPos[nLines];
 string firstStation[nLines], lastStation[nLines];
 
 //subroutine that inizialize the global variables to 0
@@ -175,7 +175,11 @@ void checkfiles(int &errorFlag, HANDLE color){
 //subroutine that inizialize the struct with the file
 void inizializeStruct(int &errorFlag, HANDLE color){
   int stationCont = 0, currentLine = 0, flag = 0;
-  int mainStationPos[nLines], lineCont = 0;
+  int lineCont = 0;
+  for (int i = 0; i < nLines; i++)
+  {
+    mainStationPos[i] = -1;
+  }
   string line;
   int pos = 0, staticPos, i = 0, k = 0;
   char posChar;
@@ -243,7 +247,7 @@ void inizializeStruct(int &errorFlag, HANDLE color){
           //saves the position of the stations that we defined
           if (station[j + i].name == mainStation){
             mainStationPos[lineCont] = j + i;
-            lineCont++;
+            //LINECONT++ OLD WAS HERE REMEMBER JUST IN CASE <----------------------------------------------
           }
           staticPos = pos + 1;
           j++;
@@ -269,7 +273,14 @@ void inizializeStruct(int &errorFlag, HANDLE color){
               //time to get from the start to the station where we are
               if ( j + i < mainStationPos[k]){
                 normalTime[k] += station[j + i].time;
-              } else { //time to get from the end to the station where we are
+              }
+              else if (mainStationPos[k] == -1) //REMEMEBER -------------------------------------------------------------------------------------
+              {
+                normalTime[k] = -1;
+                reversedTime[k] = -1;
+              }
+              else
+              { //time to get from the end to the station where we are
                 reversedTime[k] += station[j + i].time;
               }
               staticPos = pos + 1;
@@ -281,6 +292,7 @@ void inizializeStruct(int &errorFlag, HANDLE color){
         workerprint(color);
         cout << "Intervals Loading Ended Successfully" << endl;
         wait(50);
+        lineCont++;
       }
       k++;
       i += nStations;
@@ -322,6 +334,11 @@ void workerOutput(int &initialTimeH, int &initialTimeM){
 
   while (k != nLines)
   {
+    cout << mainStationPos[k] << endl;
+    if (mainStationPos[k] != -1)
+    {
+
+
     time[k] = normalTime[k];
     reverseTime[k] = reversedTime[k];
     //each line takes 1 hour to do 1 run and then it does it again but reversed
@@ -422,6 +439,17 @@ void workerOutput(int &initialTimeH, int &initialTimeM){
         }
       }
     }
+  }
+  else
+  {
+    htmlReady[cont].firstStation = "EMPTY";
+    htmlReady[cont].lastStation = "EMPTY";
+    htmlReady[cont].hourArriving = 0;
+    htmlReady[cont].minArriving = 0;
+    htmlReady[cont].line = "EMPTY";
+    htmlReady[cont].direction = "EMPTY";
+    cont++;
+  }
     k++;
   }
   for (int i = 0; i < nLines*2; i++){
@@ -578,6 +606,16 @@ int main(){
   while (controlFlag == 0){
 
     workerOutput(initialTimeH, initialTimeM);
+    for (int i = 0; i < 8; i++)
+    {
+      cout << htmlReady[i].firstStation;
+      cout << htmlReady[i].lastStation;
+      cout << htmlReady[i].hourArriving;
+      cout << htmlReady[i].minArriving;
+      cout << htmlReady[i].line;
+      cout << endl;
+    }
+    cin.get();
     htmlparser(time);
 
     updateTime = 5;
