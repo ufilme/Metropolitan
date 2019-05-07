@@ -440,18 +440,18 @@ void htmlparser(){
   html.seekg(498, ios::beg);
   for (int i = 0; i < 8; i++){
     html << "    <div class='data'>" << endl;
-    html << tab << "<p class='linefeed'>" << htmlReady[i].line << "</p>" << endl;
-    html << tab << "<p class='linefeed'>" << htmlReady[i].direction << "</p>" << endl;
-    html << tab << "<p class='linefeed'>" << htmlReady[i].firstStation << "</p>" << endl;
-    html << tab << "<p class='linefeed'>" << htmlReady[i].lastStation << "</p>" << endl;
+    html << tab << "<p class='linefeed-line'>" << htmlReady[i].line << "</p>" << endl;
+    html << tab << "<p class='linefeed-dir'>" << htmlReady[i].direction << "</p>" << endl;
+    html << tab << "<p class='linefeed-start'>" << htmlReady[i].firstStation << "</p>" << endl;
+    html << tab << "<p class='linefeed-end'>" << htmlReady[i].lastStation << "</p>" << endl;
     if (htmlReady[i].hourArriving < 10 && htmlReady[i].minArriving < 10){
-      html << tab << "<p class='linefeed'>0" << htmlReady[i].hourArriving << ":0" << htmlReady[i].minArriving << "</p>" << endl;
+      html << tab << "<p class='linefeed-clock'>0" << htmlReady[i].hourArriving << ":0" << htmlReady[i].minArriving << "</p>" << endl;
     } else if (htmlReady[i].minArriving < 10){
-      html << tab << "<p class='linefeed'>" << htmlReady[i].hourArriving << ":0" << htmlReady[i].minArriving << "</p>" << endl;
+      html << tab << "<p class='linefeed-clock'>" << htmlReady[i].hourArriving << ":0" << htmlReady[i].minArriving << "</p>" << endl;
     } else if (htmlReady[i].hourArriving < 10){
-      html << tab << "<p class='linefeed'>0" << htmlReady[i].hourArriving << ":" << htmlReady[i].minArriving << "</p>" << endl;
+      html << tab << "<p class='linefeed-clock'>0" << htmlReady[i].hourArriving << ":" << htmlReady[i].minArriving << "</p>" << endl;
     } else {
-      html << tab << "<p class='linefeed'>" << htmlReady[i].hourArriving << ":" << htmlReady[i].minArriving << "</p>" << endl;
+      html << tab << "<p class='linefeed-clock'>" << htmlReady[i].hourArriving << ":" << htmlReady[i].minArriving << "</p>" << endl;
     }
     html << "    </div>" << endl;
   }
@@ -546,6 +546,8 @@ int main(){
   clrscr();
 
   getCurrentTime(initialTimeH, initialTimeM);
+  workerOutput(initialTimeH, initialTimeM);
+  htmlparser();
 
   system("D:/Utente/Desktop/inf/c++/Metropolitan/main/v1.0-AUTOMATIC/html/index.html");
 

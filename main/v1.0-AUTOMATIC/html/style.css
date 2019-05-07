@@ -26,6 +26,7 @@ body {
 .line{
   margin-top: 5%;
   margin-right: 5%;
+  margin-bottom: 3%;
   font-size: 200%;
   float: left;
 }
@@ -33,12 +34,43 @@ body {
 .data{
   clear:left;
   font-size: 150%;
+  margin-left: -25%;
+  margin-right: -25%;
 }
 
-.linefeed{
-  margin-top: 3%;
-  margin-right: 10%;
+.linefeed-line{
   float: left;
+  width: 10.5%;
+  margin-top: 1%;
+  background: rgba(244, 119, 33, 0.01);
+}
+
+.linefeed-dir{
+  float: left;
+  width: 15%;
+  margin-top: 1%;
+  background: rgba(244, 119, 33, 0.01);
+}
+
+.linefeed-start{
+  width: 27.7%;
+  float: left;
+  margin-top: 1%;
+  background: rgba(244, 119, 33, 0.01);
+}
+
+.linefeed-end{
+  width: 31%;
+  float: left;
+  margin-top: 1%;
+  background: rgba(244, 119, 33, 0.01);
+}
+
+.linefeed-clock{
+  width: 10.5%;
+  float: left;
+  margin-top: 1%;
+  background: rgba(244, 119, 33, 0.01);
 }
 
 h1{

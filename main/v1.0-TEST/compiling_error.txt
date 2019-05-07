@@ -1,2 +1,0 @@
-D:/CodeBlocks/MinGW/bin/../lib/gcc/mingw32/5.1.0/../../../../mingw32/bin/ld.exe: cannot open output file C:\Users\Utente\AppData\Local\Temp\main.exe: Permission denied
-collect2.exe: error: ld returned 1 exit status

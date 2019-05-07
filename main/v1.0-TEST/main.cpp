@@ -42,7 +42,7 @@ struct display{
 struct readyToHTML{
   string lastStation;
   string firstStation;
-  int hourArriving, minArriving;
+  int hourArriving, minArriving, sec;
   string line;
   string direction;
 }htmlReady[nLines*2];
@@ -100,6 +100,19 @@ void workerprint(HANDLE color){
   cout << left << setw(7) << "WORKER";
   white(color);
   cout << "] ";
+}
+
+void selectionSort(){
+  readyToHTML tmp;
+  for (int j = 0; j < nLines*2; j++){
+    for (int i = 0; i < nLines*2; i++){
+      if (htmlReady[j].sec < htmlReady[i].sec){
+        tmp = htmlReady[j];
+        htmlReady[j] = htmlReady[i];
+        htmlReady[i] = tmp;
+      }
+    }
+  }
 }
 
 void checkfiles(int &errorFlag, HANDLE color){
@@ -430,31 +443,34 @@ void workerOutput(int &initialTimeH, int &initialTimeM){
     }
     k++;
   }
+  for (int i = 0; i < nLines*2; i++){
+    htmlReady[i].sec = htmlReady[i].hourArriving * 3600 + htmlReady[i].minArriving * 60;
+  }
 }
 
 void htmlparser(){
   fstream html("html/index.html");
   string tab = "      ";
-  html.seekg(415, ios::beg);
+  html.seekg(498, ios::beg);
   for(int i = 0; i < 1000; i++){
     html << " " << endl;
   }
-  cin.get();
-  html.seekg(415, ios::beg);
+  selectionSort();
+  html.seekg(498, ios::beg);
   for (int i = 0; i < 8; i++){
     html << "    <div class='data'>" << endl;
-    html << tab << "<p class='linefeed'>" << htmlReady[i].line << "</p>" << endl;
-    html << tab << "<p class='linefeed'>" << htmlReady[i].direction << "</p>" << endl;
-    html << tab << "<p class='linefeed'>" << htmlReady[i].firstStation << "</p>" << endl;
-    html << tab << "<p class='linefeed'>" << htmlReady[i].lastStation << "</p>" << endl;
+    html << tab << "<p class='linefeed-line'>" << htmlReady[i].line << "</p>" << endl;
+    html << tab << "<p class='linefeed-dir'>" << htmlReady[i].direction << "</p>" << endl;
+    html << tab << "<p class='linefeed-start'>" << htmlReady[i].firstStation << "</p>" << endl;
+    html << tab << "<p class='linefeed-end'>" << htmlReady[i].lastStation << "</p>" << endl;
     if (htmlReady[i].hourArriving < 10 && htmlReady[i].minArriving < 10){
-      html << tab << "<p class='linefeed'>0" << htmlReady[i].hourArriving << ":0" << htmlReady[i].minArriving << "</p>" << endl;
+      html << tab << "<p class='linefeed-clock'>0" << htmlReady[i].hourArriving << ":0" << htmlReady[i].minArriving << "</p>" << endl;
     } else if (htmlReady[i].minArriving < 10){
-      html << tab << "<p class='linefeed'>" << htmlReady[i].hourArriving << ":0" << htmlReady[i].minArriving << "</p>" << endl;
+      html << tab << "<p class='linefeed-clock'>" << htmlReady[i].hourArriving << ":0" << htmlReady[i].minArriving << "</p>" << endl;
     } else if (htmlReady[i].hourArriving < 10){
-      html << tab << "<p class='linefeed'>0" << htmlReady[i].hourArriving << ":" << htmlReady[i].minArriving << "</p>" << endl;
+      html << tab << "<p class='linefeed-clock'>0" << htmlReady[i].hourArriving << ":" << htmlReady[i].minArriving << "</p>" << endl;
     } else {
-      html << tab << "<p class='linefeed'>" << htmlReady[i].hourArriving << ":" << htmlReady[i].minArriving << "</p>" << endl;
+      html << tab << "<p class='linefeed-clock'>" << htmlReady[i].hourArriving << ":" << htmlReady[i].minArriving << "</p>" << endl;
     }
     html << "    </div>" << endl;
   }
@@ -577,8 +593,10 @@ int main(){
   clrscr();
 
   userinput(initialTimeH, initialTimeM);
+  workerOutput(initialTimeH, initialTimeM);
+  htmlparser();
 
-  //system("D:/Utente/Desktop/inf/c++/Metropolitan/main/v1.0-TEST/html/index.html");
+  system("D:/Utente/Desktop/inf/c++/Metropolitan/main/v1.0-TEST/html/index.html");
 
   while (controlFlag == 0){
 
@@ -598,7 +616,7 @@ int main(){
       cout << endl;
     }
     htmlparser();
-    updateTime = 10;
+    updateTime = 5;
     while (exitFlag == 0){
       cout << "Running..." << endl;
       cout << "Next update in: " << updateTime << endl;
@@ -610,7 +628,9 @@ int main(){
       clrscr();
       updateTime--;
       if (updateTime == 0){
-        updateTime = 10;
+        workerOutput(initialTimeH, initialTimeM);
+        htmlparser();
+        updateTime = 5;
       }
     }
     exitFlag = 0;
