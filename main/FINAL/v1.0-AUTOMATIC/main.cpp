@@ -46,7 +46,7 @@ struct readyToHTML{
   int hourArriving, minArriving, sec;
   string line;
   string direction;
-}htmlReady[nLines*2];
+}htmlReady[nLines*4];
 
 //------------------------------------------
 //Colors
@@ -304,8 +304,6 @@ void workerOutput(int &initialTimeH, int &initialTimeM){
   {
     if (mainStationPos[k] != -1)
     {
-
-
     time[k] = normalTime[k];
     reverseTime[k] = reversedTime[k];
     //each line takes 1 hour to do 1 run and then it does it again but reversed
@@ -315,24 +313,44 @@ void workerOutput(int &initialTimeH, int &initialTimeM){
       isReversed = false;
       //I also check if the initial time is greater or lower then the time that the train needs to get to our station
       //if it is greater it adds 1 hours to the time
-      if (time[k] < initialTimeM * 60)
+      while(time[k] < initialTimeM * 60)
       {
-        isReversed = true;
-        reverseTime[k] += 3600;
-        time[k] += 3600;
-        //cont++;
+          isReversed = true;
+          reverseTime[k] += totalTime[k];
+          time[k] += totalTime[k];
+          if (time[k] >= initialTimeM * 60)
+          {
+            break;
+          }
+          time[k] += totalTime[k];
+          reverseTime[k] += totalTime[k];
+          isReversed = false;
+          if (reverseTime[k] < initialTimeM * 60)
+          {
+            break;
+          }
       }
     }
     else
     {
       isReversed = true;
       //same thing as before if the initial time is greater or lower than  the time that the train needs to get to our station
-      if (reversedTime[k] < initialTimeM * 60)
+      while(reverseTime[k] < initialTimeM * 60)
       {
-        time[k] += 3600;
-        reverseTime[k] += 3600;
-        isReversed = false;
-        //cont++;
+          time[k] += totalTime[k];
+          reverseTime[k] += totalTime[k];
+          isReversed = false;
+          if (reverseTime[k] < initialTimeM * 60)
+          {
+            break;
+          }
+          isReversed = true;
+          reverseTime[k] += totalTime[k];
+          time[k] += totalTime[k];
+          if (time[k] < initialTimeM * 60)
+          {
+            break;
+          }
       }
     }
     for (int i = initialTimeM * 60; i <= (((finalTimeH - initialTimeH) * 60) * 60) + (finalTimeM * 60); i++)
@@ -350,6 +368,7 @@ void workerOutput(int &initialTimeH, int &initialTimeM){
           // we dont need the seconds but i leaved there just in case
     	     //  time[k] = time[k]%60;
     	      //  sec = time[k];
+            /*
           cout << station[k * nStations].line << " coming from: " << firstStation[k] << " going to: " << lastStation[k] << " ";
           //if the min were minus then 10 the output would've been something like 03:3 and not 03:03
           //so I did some correction
@@ -361,17 +380,29 @@ void workerOutput(int &initialTimeH, int &initialTimeM){
           {
             cout <<hour + initialTimeH << ":" << min << endl;
           }
+          */
           //I add 1 hour to the times
-          reverseTime[k] += 3600;
-          time[k] = tmp + 3600;
+          reverseTime[k] += totalTime[k];
+          time[k] = tmp + totalTime[k];
           isReversed = true;
           //This inizialize the struct that will go in the html
           htmlReady[cont].firstStation = firstStation[k];
           htmlReady[cont].lastStation = lastStation[k];
           htmlReady[cont].hourArriving = hour + initialTimeH;
+          if (htmlReady[cont].hourArriving >= 24)
+          {
+            htmlReady[cont].hourArriving -= 24;
+          }
           htmlReady[cont].minArriving = min;
           htmlReady[cont].line = station[k * nStations].line;
           htmlReady[cont].direction = "RIGHT";
+          cout << htmlReady[cont].firstStation << " ";
+          cout << htmlReady[cont].lastStation << " ";
+          cout << htmlReady[cont].hourArriving <<" ";
+          cout << htmlReady[cont].minArriving << " ";
+          cout << htmlReady[cont].line << " ";
+          cout << htmlReady[cont].direction << endl;
+
           cont++;
         }
       }
@@ -384,7 +415,7 @@ void workerOutput(int &initialTimeH, int &initialTimeM){
           hour = reverseTime[k]/3600;
           reverseTime[k] = reverseTime[k]%3600;
           min = reverseTime[k]/60;
-          cout << station[k * nStations].line << " coming from: " << lastStation[k] << " going to: " << firstStation[k] << " ";
+          /*cout << station[k * nStations].line << " coming from: " << lastStation[k] << " going to: " << firstStation[k] << " ";
           if (min < 10)
           {
             cout <<hour + initialTimeH << ":0" << min << endl;
@@ -392,16 +423,26 @@ void workerOutput(int &initialTimeH, int &initialTimeM){
           else
           {
             cout <<hour + initialTimeH << ":" << min << endl;
-          }
-          time[k] += 3600;
-          reverseTime[k] = tmpReverse + 3600;
+          }*/
+          time[k] += totalTime[k];
+          reverseTime[k] = tmpReverse + totalTime[k];
           isReversed = false;
           htmlReady[cont].firstStation = lastStation[k];
           htmlReady[cont].lastStation = firstStation[k];
           htmlReady[cont].hourArriving = hour + initialTimeH;
+          if (htmlReady[cont].hourArriving >= 24)
+          {
+            htmlReady[cont].hourArriving -= 24;
+          }
           htmlReady[cont].minArriving = min;
           htmlReady[cont].line = station[k * nStations].line;
           htmlReady[cont].direction = "LEFT";
+          cout << htmlReady[cont].firstStation << " ";
+          cout << htmlReady[cont].lastStation << " ";
+          cout << htmlReady[cont].hourArriving <<" ";
+          cout << htmlReady[cont].minArriving << " ";
+          cout << htmlReady[cont].line << " ";
+          cout << htmlReady[cont].direction << endl;
           cont++;
         }
       }
@@ -419,7 +460,7 @@ void workerOutput(int &initialTimeH, int &initialTimeM){
   }
     k++;
   }
-  for (int i = 0; i < nLines*2; i++){
+  for (int i = 0; i < nLines*4; i++){
     htmlReady[i].sec = htmlReady[i].hourArriving * 3600 + htmlReady[i].minArriving * 60;
   }
 }
@@ -567,6 +608,7 @@ int main(){
 
   getCurrentTime(initialTimeH, initialTimeM, time);
   workerOutput(initialTimeH, initialTimeM);
+  cin.get();
   htmlparser(time);
 
   system("cd html && index.html");
