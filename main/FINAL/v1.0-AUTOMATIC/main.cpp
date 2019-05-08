@@ -23,33 +23,6 @@ string firstStation[nLines], lastStation[nLines];
 
 //subroutine that inizialize the global variables to 0
 
-void inizializeMainStaion()
-{
-  string line;
-  std::ifstream fileMainStation;
-  fileMainStation.open("train.txt");
-  if(fileMainStation.is_open())
-  {
-    bool isEmpty(true);
-    string lines;
-    while( fileMainStation >> lines )
-    {
-      isEmpty = false;
-    }
-    if (isEmpty == true)
-    {
-      cout << "EMPTY AAAAAAAAAAAAAA " << endl;
-    }
-
-    while ( getline (fileMainStation, line) )
-    {
-      mainStation = line;
-      cout << "aaaa" << endl;
-    }
-    fileMainStation.close();
-  }
-}
-
 void inizializeToZero(){
   for (int i = 0; i < nLines; i++)
   {
@@ -75,6 +48,54 @@ struct readyToHTML{
   string direction;
 }htmlReady[nLines*2];
 
+//------------------------------------------
+//Colors
+void white(HANDLE color){
+  SetConsoleTextAttribute(color, 15);
+}
+void yellow(HANDLE color){
+  SetConsoleTextAttribute(color, 14);
+}
+void green(HANDLE color){
+  SetConsoleTextAttribute(color, 10);
+}
+void red(HANDLE color){
+  SetConsoleTextAttribute(color, 12);
+}
+//------------------------------------------
+
+void workerprint(HANDLE color){
+  cout << left << setw(2) << "[";
+  green(color);
+  cout << left << setw(7) << "WORKER";
+  white(color);
+  cout << "] ";
+}
+
+string inizializeMainStaion(HANDLE color)
+{
+  string line;
+  int flag = 0;
+  fstream file("data/main_station.txt");
+  if(getline(file, line)){
+    mainStation = line;
+  } else {
+    workerprint(color);
+    cout << "Are you running the program for the first time?" << endl;
+    workerprint(color);
+    cout << "You need to define your main station" << endl;
+    cout << ">";
+    getline(cin, line);
+    ofstream file("data/main_station.txt");
+    file << line;
+    mainStation = line;
+    workerprint(color);
+    cout << "Done" << endl;
+    }
+  white(color);
+  return mainStation;
+}
+
 //subroutine that detect the O.S. and then put to sleep the program for 1 second
 void wait(int timer){
   #if defined(_WIN32)
@@ -95,22 +116,6 @@ void clrscr(){
 }
 
 //------------------------------------------
-//Colors
-void white(HANDLE color){
-  SetConsoleTextAttribute(color, 15);
-}
-void yellow(HANDLE color){
-  SetConsoleTextAttribute(color, 14);
-}
-void green(HANDLE color){
-  SetConsoleTextAttribute(color, 10);
-}
-void red(HANDLE color){
-  SetConsoleTextAttribute(color, 12);
-}
-//------------------------------------------
-
-//------------------------------------------
 //Line separator
 void separator(){
     string underscore;
@@ -121,14 +126,6 @@ void separator(){
     cout << endl;
 }
 //------------------------------------------
-
-void workerprint(HANDLE color){
-  cout << left << setw(2) << "[";
-  green(color);
-  cout << left << setw(7) << "WORKER";
-  white(color);
-  cout << "] ";
-}
 
 void selectionSort(){
   readyToHTML tmp;
@@ -143,86 +140,11 @@ void selectionSort(){
   }
 }
 
-void checkfiles(int &errorFlag, HANDLE color){
-  int flag = 0;
-  string tmp;
-  ifstream file ("data/train.txt");
-  //------------------------------------------
-  //Checking File textes
-  for (int i = 0; i < 8; i++){
-    if (tmp.length() == 3){
-      tmp.clear();
-    }
-    workerprint(color);
-    cout << "Starting Checking Files" << endl;
-    if (i == 0){
-      wait(2000);
-    }
-    cout << left << setw(2) << "[";
-    if (i % 2 != 0){
-      yellow(color);
-    } else {
-      white(color);
-    }
-    cout << left << setw(7) << "WORKER";
-    white(color);
-    cout << "] ";
-    cout << "Checking File";
-    tmp += ".";
-    cout << tmp;
-    wait(150);
-    clrscr();
-  }
-  tmp += ".";
-  workerprint(color);
-  cout << "Starting Checking Files" << endl;
-  cout << left << setw(2) << "[";
-  cout << left << setw(7) << "WORKER";
-  white(color);
-  cout << "] ";
-  cout << "Checking File" << tmp << endl;
-  //------------------------------------------
-  if (file.is_open()){
-    ifstream file ("html/index.txt");
-    if (file.is_open()){
-      ifstream file ("html/style.css");
-      if (file.is_open()){
-        ifstream file ("html/font.ttf");
-  if (file.is_open()){
-            workerprint(color);
-            cout << "Checking Done Successfully\n";
-            white(color);
-          } else {
-            flag = 1;
-          }
-      } else {
-        flag = 1;
-      }
-    } else {
-      flag = 1;
-    }
-  } else {
-    flag = 1;
-  }
-  if (flag == 1){
-    cout << left << setw(2) << "[";
-    red(color);
-    cout << left << setw(7) << "ERROR";
-    white(color);
-    cout << "] ";
-    red(color);
-    cout << "Database File Not Found\n";
-    wait(1000);
-    errorFlag = 404;
-    white(color);
-  }
-}
-  //------------------------------------------
-
 //subroutine that inizialize the struct with the file
 void inizializeStruct(int &errorFlag, HANDLE color){
   int stationCont = 0, currentLine = 0, flag = 0;
   int lineCont = 0;
+
   for (int i = 0; i < nLines; i++)
   {
     mainStationPos[i] = -1;
@@ -507,19 +429,19 @@ void htmlparser(string time){
   string tab = "      ";
   string structTime, hour, minute;
   stringstream ss;
-  html.seekg(498, ios::beg);
+  html.seekg(507, ios::beg);
   for(int i = 0; i < 1000; i++){
     html << " " << endl;
   }
   selectionSort();
-  html.seekg(498, ios::beg);
+  html.seekg(507, ios::beg);
   for (int i = 0; i < 8; i++){
     if (htmlReady[i].sec != 0){
       html << "    <div class='data'>" << endl;
-      html << tab << "<p class='linefeed-line'>" << htmlReady[i].line << "</p>" << endl;
-      html << tab << "<p class='linefeed-dir'>" << htmlReady[i].direction << "</p>" << endl;
-      html << tab << "<p class='linefeed-start'>" << htmlReady[i].firstStation << "</p>" << endl;
-      html << tab << "<p class='linefeed-end'>" << htmlReady[i].lastStation << "</p>" << endl;
+      html << tab << "<p class='data-line'>" << htmlReady[i].line << "</p>" << endl;
+      html << tab << "<p class='data-dir'>" << htmlReady[i].direction << "</p>" << endl;
+      html << tab << "<p class='data-start'>" << htmlReady[i].firstStation << "</p>" << endl;
+      html << tab << "<p class='data-end'>" << htmlReady[i].lastStation << "</p>" << endl;
       time = time.substr(0,5);
       ss << htmlReady[i].hourArriving;
       hour = ss.str();
@@ -539,21 +461,21 @@ void htmlparser(string time){
       }
       cout << time << " " << structTime << endl;
       if (time == structTime){
-        html << tab << "<p class='linefeed-clock'>" << "IN STAZIONE" << "</p>" << endl;
+        html << tab << "<p class='data-clock'>" << "IN STAZIONE" << "</p>" << endl;
       } else if (htmlReady[i].hourArriving < 10 && htmlReady[i].minArriving < 10){
-        html << tab << "<p class='linefeed-clock'>0" << htmlReady[i].hourArriving << ":0" << htmlReady[i].minArriving << "</p>" << endl;
+        html << tab << "<p class='data-clock'>0" << htmlReady[i].hourArriving << ":0" << htmlReady[i].minArriving << "</p>" << endl;
       } else if (htmlReady[i].minArriving < 10){
-        html << tab << "<p class='linefeed-clock'>" << htmlReady[i].hourArriving << ":0" << htmlReady[i].minArriving << "</p>" << endl;
+        html << tab << "<p class='data-clock'>" << htmlReady[i].hourArriving << ":0" << htmlReady[i].minArriving << "</p>" << endl;
       } else if (htmlReady[i].hourArriving < 10){
-        html << tab << "<p class='linefeed-clock'>0" << htmlReady[i].hourArriving << ":" << htmlReady[i].minArriving << "</p>" << endl;
+        html << tab << "<p class='data-clock'>0" << htmlReady[i].hourArriving << ":" << htmlReady[i].minArriving << "</p>" << endl;
       } else {
-        html << tab << "<p class='linefeed-clock'>" << htmlReady[i].hourArriving << ":" << htmlReady[i].minArriving << "</p>" << endl;
+        html << tab << "<p class='data-clock'>" << htmlReady[i].hourArriving << ":" << htmlReady[i].minArriving << "</p>" << endl;
       }
       html << "    </div>" << endl;
     }
-    html << "  </body>" << endl;
-    html << "</html>" << endl;
-    }
+  }
+  html << "  </body>" << endl;
+  html << "</html>" << endl;
 }
 
 void getCurrentTime(int &initialTimeH, int &initialTimeM, string &midnight){
@@ -581,14 +503,15 @@ void getCurrentTime(int &initialTimeH, int &initialTimeM, string &midnight){
 }
 
 int main(){
-  inizializeMainStaion();
   int errorFlag = 0, updateTime = 5, controlFlag = 0, exitFlag = 0, flag = 0;
   int initialTimeH, initialTimeM;
   string input, time;
   HANDLE  color = GetStdHandle(STD_OUTPUT_HANDLE);
 
+  mainStation = inizializeMainStaion(color);
+
   inizializeToZero();
-  checkfiles(errorFlag, color);
+  //checkfiles(errorFlag, color);
   if (errorFlag == 404){
     cout << left << setw(2) << "[";
     red(color);

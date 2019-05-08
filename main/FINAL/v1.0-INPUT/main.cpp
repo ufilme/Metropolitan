@@ -12,12 +12,10 @@
 #define nLines 4
 #define nStations 13
 
-//define the station where the programs runs
-#define mainStation "Cuba"
-
 using namespace std;
 
 //global variables that i could've put in the main
+string mainStation;
 int totalTime[nLines], normalTime[nLines], reversedTime[nLines], mainStationPos[nLines];
 string firstStation[nLines], lastStation[nLines];
 
@@ -102,6 +100,30 @@ void workerprint(HANDLE color){
   cout << "] ";
 }
 
+string inizializeMainStaion(HANDLE color)
+{
+  string line;
+  int flag = 0;
+  fstream file("data/main_station.txt");
+  if(getline(file, line)){
+    mainStation = line;
+  } else {
+    workerprint(color);
+    cout << "Are you running the program for the first time?" << endl;
+    workerprint(color);
+    cout << "You need to define your main station" << endl;
+    cout << ">";
+    getline(cin, line);
+    ofstream file("data/main_station.txt");
+    file << line;
+    mainStation = line;
+    workerprint(color);
+    cout << "Done" << endl;
+    }
+  white(color);
+  return mainStation;
+}
+
 void selectionSort(){
   readyToHTML tmp;
   for (int j = 0; j < nLines*2; j++){
@@ -112,81 +134,6 @@ void selectionSort(){
         htmlReady[i] = tmp;
       }
     }
-  }
-}
-
-void checkfiles(int &errorFlag, HANDLE color){
-  int flag = 0;
-  string tmp;
-  ifstream file ("data/train.txt");
-  //------------------------------------------
-  //Checking File textes
-  for (int i = 0; i < 8; i++){
-    if (tmp.length() == 3){
-      tmp.clear();
-    }
-    workerprint(color);
-    cout << "Starting Checking Files" << endl;
-    if (i == 0){
-      wait(2000);
-    }
-    cout << left << setw(2) << "[";
-    if (i % 2 != 0){
-      yellow(color);
-    } else {
-      white(color);
-    }
-    cout << left << setw(7) << "WORKER";
-    white(color);
-    cout << "] ";
-    cout << "Checking File";
-    tmp += ".";
-    cout << tmp;
-    wait(150);
-    clrscr();
-  }
-  tmp += ".";
-  workerprint(color);
-  cout << "Starting Checking Files" << endl;
-  cout << left << setw(2) << "[";
-  cout << left << setw(7) << "WORKER";
-  white(color);
-  cout << "] ";
-  cout << "Checking File" << tmp << endl;
-  //------------------------------------------
-  if (file.is_open()){
-    ifstream file ("html/index.txt");
-    if (file.is_open()){
-      ifstream file ("html/style.css");
-      if (file.is_open()){
-        ifstream file ("html/font.ttf");
-  if (file.is_open()){
-            workerprint(color);
-            cout << "Checking Done Successfully\n";
-            white(color);
-          } else {
-            flag = 1;
-          }
-      } else {
-        flag = 1;
-      }
-    } else {
-      flag = 1;
-    }
-  } else {
-    flag = 1;
-  }
-  if (flag == 1){
-    cout << left << setw(2) << "[";
-    red(color);
-    cout << left << setw(7) << "ERROR";
-    white(color);
-    cout << "] ";
-    red(color);
-    cout << "Database File Not Found\n";
-    wait(1000);
-    errorFlag = 404;
-    white(color);
   }
 }
 
@@ -416,7 +363,7 @@ void workerOutput(int &initialTimeH, int &initialTimeM){
           // we dont need the seconds but i leaved there just in case
     	     //  time[k] = time[k]%60;
     	      //  sec = time[k];
-          cout << station[k * nStations].line << " coming from: " << firstStation[k] << " going to: " << lastStation[k] << " ";
+          /*cout << station[k * nStations].line << " coming from: " << firstStation[k] << " going to: " << lastStation[k] << " ";
           //if the min were minus then 10 the output would've been something like 03:3 and not 03:03
           //so I did some correction
           if (min < 10)
@@ -426,7 +373,7 @@ void workerOutput(int &initialTimeH, int &initialTimeM){
           else
           {
             cout <<hour + initialTimeH << ":" << min << endl;
-          }
+          }*/
           //I add 1 hour to the times
           reverseTime[k] += 3600;
           time[k] = tmp + 3600;
@@ -450,7 +397,7 @@ void workerOutput(int &initialTimeH, int &initialTimeM){
           hour = reverseTime[k]/3600;
           reverseTime[k] = reverseTime[k]%3600;
           min = reverseTime[k]/60;
-          cout << station[k * nStations].line << " coming from: " << lastStation[k] << " going to: " << firstStation[k] << " ";
+          /*cout << station[k * nStations].line << " coming from: " << lastStation[k] << " going to: " << firstStation[k] << " ";
           if (min < 10)
           {
             cout <<hour + initialTimeH << ":0" << min << endl;
@@ -458,7 +405,7 @@ void workerOutput(int &initialTimeH, int &initialTimeM){
           else
           {
             cout <<hour + initialTimeH << ":" << min << endl;
-          }
+          }*/
           time[k] += 3600;
           reverseTime[k] = tmpReverse + 3600;
           isReversed = false;
@@ -490,42 +437,66 @@ void workerOutput(int &initialTimeH, int &initialTimeM){
   }
 }
 
-void htmlparser(){
+void htmlparser(string time){
   fstream html("html/index.html");
   string tab = "      ";
-  html.seekg(498, ios::beg);
+  string structTime, hour, minute;
+  stringstream ss;
+  html.seekg(507, ios::beg);
   for(int i = 0; i < 1000; i++){
     html << " " << endl;
   }
   selectionSort();
-  html.seekg(498, ios::beg);
+  html.seekg(507, ios::beg);
   for (int i = 0; i < 8; i++){
-    html << "    <div class='data'>" << endl;
-    html << tab << "<p class='linefeed-line'>" << htmlReady[i].line << "</p>" << endl;
-    html << tab << "<p class='linefeed-dir'>" << htmlReady[i].direction << "</p>" << endl;
-    html << tab << "<p class='linefeed-start'>" << htmlReady[i].firstStation << "</p>" << endl;
-    html << tab << "<p class='linefeed-end'>" << htmlReady[i].lastStation << "</p>" << endl;
-    if (htmlReady[i].hourArriving < 10 && htmlReady[i].minArriving < 10){
-      html << tab << "<p class='linefeed-clock'>0" << htmlReady[i].hourArriving << ":0" << htmlReady[i].minArriving << "</p>" << endl;
-    } else if (htmlReady[i].minArriving < 10){
-      html << tab << "<p class='linefeed-clock'>" << htmlReady[i].hourArriving << ":0" << htmlReady[i].minArriving << "</p>" << endl;
-    } else if (htmlReady[i].hourArriving < 10){
-      html << tab << "<p class='linefeed-clock'>0" << htmlReady[i].hourArriving << ":" << htmlReady[i].minArriving << "</p>" << endl;
-    } else {
-      html << tab << "<p class='linefeed-clock'>" << htmlReady[i].hourArriving << ":" << htmlReady[i].minArriving << "</p>" << endl;
+    if (htmlReady[i].sec != 0){
+      html << "    <div class='data'>" << endl;
+      html << tab << "<p class='data-line'>" << htmlReady[i].line << "</p>" << endl;
+      html << tab << "<p class='data-dir'>" << htmlReady[i].direction << "</p>" << endl;
+      html << tab << "<p class='data-start'>" << htmlReady[i].firstStation << "</p>" << endl;
+      html << tab << "<p class='data-end'>" << htmlReady[i].lastStation << "</p>" << endl;
+      time = time.substr(0,5);
+      ss << htmlReady[i].hourArriving;
+      hour = ss.str();
+      ss.str("");
+      ss << htmlReady[i].minArriving;
+      minute = ss.str();
+      ss.str("");
+      if (htmlReady[i].hourArriving < 10 && htmlReady[i].minArriving < 10){
+        structTime = "0" + hour + ":" + "0" + minute;
+      } else if (htmlReady[i].minArriving < 10){
+        structTime = hour + ":" + "0" + minute;
+      } else if (htmlReady[i].hourArriving < 10){
+        structTime = "0" + hour + ":" + minute;
+      } else {
+        structTime = hour + ":" + minute;
+      }
+      if (time == structTime){
+        html << tab << "<p class='data-clock'>" << "IN STAZIONE" << "</p>" << endl;
+      } else if (htmlReady[i].hourArriving < 10 && htmlReady[i].minArriving < 10){
+        html << tab << "<p class='data-clock'>0" << htmlReady[i].hourArriving << ":0" << htmlReady[i].minArriving << "</p>" << endl;
+      } else if (htmlReady[i].minArriving < 10){
+        html << tab << "<p class='data-clock'>" << htmlReady[i].hourArriving << ":0" << htmlReady[i].minArriving << "</p>" << endl;
+      } else if (htmlReady[i].hourArriving < 10){
+        html << tab << "<p class='data-clock'>0" << htmlReady[i].hourArriving << ":" << htmlReady[i].minArriving << "</p>" << endl;
+      } else {
+        html << tab << "<p class='data-clock'>" << htmlReady[i].hourArriving << ":" << htmlReady[i].minArriving << "</p>" << endl;
+      }
+      html << "    </div>" << endl;
     }
-    html << "    </div>" << endl;
   }
   html << "  </body>" << endl;
   html << "</html>" << endl;
 }
 
-void userinput(int &initialTimeH, int &initialTimeM){
+void userinput(int &initialTimeH, int &initialTimeM, HANDLE color){
   int flag = 0;
   string input, tmp;
 
   while(flag == 0){
-    cout << "Inserire il tempo iniziale: ";
+    workerprint(color);
+    cout << "Inserire il tempo iniziale";
+    cout << "> ";
     getline(cin,input);
 
     if (input.length() <= 5 || input.length() > 0){
@@ -574,13 +545,15 @@ void getCurrentTime(int &initialTimeH, int &initialTimeM){
 }
 
 int main(){
-  inizializeToZero();
   int errorFlag = 0, updateTime = 5, controlFlag = 0, exitFlag = 0, flag = 0;
   int initialTimeH, initialTimeM;
-  string input;
+  string input, time;
   HANDLE  color = GetStdHandle(STD_OUTPUT_HANDLE);
 
-  checkfiles(errorFlag, color);
+  mainStation = inizializeMainStaion(color);
+  inizializeToZero();
+
+  //checkfiles(errorFlag, color);
   if (errorFlag == 404){
     cout << left << setw(2) << "[";
     red(color);
@@ -634,51 +607,28 @@ int main(){
 
   clrscr();
 
-  userinput(initialTimeH, initialTimeM);
+  userinput(initialTimeH, initialTimeM, color);
   workerOutput(initialTimeH, initialTimeM);
-  htmlparser();
+  htmlparser(time);
 
-  system("D:/Utente/Desktop/inf/c++/Metropolitan/main/v1.0-TEST/html/index.html");
+  system("cd html && index.html");
 
   while (controlFlag == 0){
 
     if (flag == 1){
-      userinput(initialTimeH, initialTimeM);
+      userinput(initialTimeH, initialTimeM, color);
     }
     flag = 1;
 
     workerOutput(initialTimeH, initialTimeM);
-    /*
-    for (int i = 0; i < 8; i++)
-    {
-      cout << htmlReady[i].firstStation;
-      cout << htmlReady[i].lastStation;
-      cout << htmlReady[i].hourArriving;
-      cout << htmlReady[i].minArriving;
-      cout << htmlReady[i].line;
-      cout << endl;
-    }
+    htmlparser(time);
+    cout << time << endl;
+    workerprint(color);
+    cout << "Runned Successfully" << endl;
+    workerprint(color);
+    cout << "Press any key to change time" << endl;
     cin.get();
-    */
-    htmlparser();
-    updateTime = 5;
-    while (exitFlag == 0){
-      cout << "Running..." << endl;
-      cout << "Next update in: " << updateTime << endl;
-      cout << "To change data hold SPACE" << endl;
-      if (GetKeyState(VK_SPACE)){
-        exitFlag = 1;
-      }
-      wait(1000);
-      clrscr();
-      updateTime--;
-      if (updateTime == 0){
-        workerOutput(initialTimeH, initialTimeM);
-        htmlparser();
-        updateTime = 5;
-      }
-    }
-    exitFlag = 0;
+    clrscr();
   }
 
   return 0;

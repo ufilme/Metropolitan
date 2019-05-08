@@ -1,6 +1,6 @@
 @font-face {
   font-family: 'highspeed';
-  src: url('HIGHSPEED.TTF');
+  src: url('font.TTF');
 }
 
 body {
@@ -19,55 +19,84 @@ body {
 }
 
 .title{
-  margin-left: -25%;
-  margin-right: -25%;
+  clear:left;
+  margin-left: -22%;
+  margin-right: -28%;
+    font-size: 250%;
 }
 
-.line{
+.title-line{
   margin-top: 5%;
-  margin-right: 5%;
-  margin-bottom: 3%;
-  font-size: 200%;
   float: left;
+  width: 10.5%;
+  background: rgba(244, 119, 33, 0.01);
+}
+
+.title-dir{
+  margin-top: 5%;
+  float: left;
+  width: 18%;
+  background: rgba(244, 119, 33, 0.01);
+}
+
+.title-start{
+  margin-top: 5%;
+  float: left;
+  width: 24.7%;
+  background: rgba(244, 119, 33, 0.01);
+}
+
+.title-end{
+  margin-top: 5%;
+  float: left;
+  width: 23%;
+  background: rgba(244, 119, 33, 0.01);
+}
+
+.title-clock{
+  margin-top: 5%;
+  float: left;
+  width: 17.5%;
+  background: rgba(244, 119, 33, 0.01);
 }
 
 .data{
   clear:left;
-  font-size: 150%;
-  margin-left: -25%;
-  margin-right: -25%;
+  font-size: 140%;
+  margin-left: -22%;
+  margin-right: -28%;
 }
 
-.linefeed-line{
+.data-line{
   float: left;
   width: 10.5%;
   margin-top: 1%;
   background: rgba(244, 119, 33, 0.01);
 }
 
-.linefeed-dir{
+.data-dir{
   float: left;
-  width: 15%;
+  width: 18%;
   margin-top: 1%;
   background: rgba(244, 119, 33, 0.01);
 }
 
-.linefeed-start{
-  width: 27.7%;
-  float: left;
-  margin-top: 1%;
-  background: rgba(244, 119, 33, 0.01);
-}
-
-.linefeed-end{
-  width: 31%;
+.data-start{
+  width: 24.7%;
   float: left;
   margin-top: 1%;
   background: rgba(244, 119, 33, 0.01);
 }
 
-.linefeed-clock{
-  width: 10.5%;
+.data-end{
+  width: 23%;
+  float: left;
+  margin-top: 1%;
+  background: rgba(244, 119, 33, 0.01);
+}
+
+.data-clock{
+  width: 17.5%;
   float: left;
   margin-top: 1%;
   background: rgba(244, 119, 33, 0.01);
@@ -124,4 +153,14 @@ h1{
 
 .searchbar::placeholder {
   opacity: .5;
+}
+
+.noselect {
+  -webkit-touch-callout: none; /* iOS Safari */
+    -webkit-user-select: none; /* Safari */
+     -khtml-user-select: none; /* Konqueror HTML */
+       -moz-user-select: none; /* Firefox */
+        -ms-user-select: none; /* Internet Explorer/Edge */
+            user-select: none; /* Non-prefixed version, currently
+                                  supported by Chrome and Opera */
 }
