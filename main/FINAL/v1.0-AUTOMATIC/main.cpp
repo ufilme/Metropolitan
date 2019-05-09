@@ -318,14 +318,14 @@ void workerOutput(int &initialTimeH, int &initialTimeM){
           isReversed = true;
           reverseTime[k] += totalTime[k];
           time[k] += totalTime[k];
-          if (time[k] >= initialTimeM * 60)
+          if (reverseTime[k] >= initialTimeM * 60)
           {
             break;
           }
           time[k] += totalTime[k];
           reverseTime[k] += totalTime[k];
           isReversed = false;
-          if (reverseTime[k] < initialTimeM * 60)
+          if (time[k] >= initialTimeM * 60)
           {
             break;
           }
@@ -340,14 +340,14 @@ void workerOutput(int &initialTimeH, int &initialTimeM){
           time[k] += totalTime[k];
           reverseTime[k] += totalTime[k];
           isReversed = false;
-          if (reverseTime[k] < initialTimeM * 60)
+          if (time[k] >= initialTimeM * 60)
           {
             break;
           }
           isReversed = true;
           reverseTime[k] += totalTime[k];
           time[k] += totalTime[k];
-          if (time[k] < initialTimeM * 60)
+          if (reverseTime[k] >= initialTimeM * 60)
           {
             break;
           }
