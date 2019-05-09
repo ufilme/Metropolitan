@@ -484,12 +484,12 @@ void htmlparser(string time){
   string tab = "      ";
   string structTime, hour, minute;
   stringstream ss;
-  html.seekg(548, ios::beg);
+  html.seekg(522, ios::beg);
   for(int i = 0; i < 5000; i++){
     html << " " << endl;
   }
   selectionSort();
-  html.seekg(548, ios::beg);
+  html.seekg(522, ios::beg);
   for (int i = 0; i < nLines * 4; i++){
     if (htmlReady[i].sec != 0){
       html << "    <div class='data'>" << endl;
@@ -504,6 +504,7 @@ void htmlparser(string time){
       ss << htmlReady[i].minArriving;
       minute = ss.str();
       ss.str("");
+      cout << hour << minute << endl;
       if (htmlReady[i].hourArriving < 10 && htmlReady[i].minArriving < 10){
         structTime = "0" + hour + ":" + "0" + minute;
       } else if (htmlReady[i].minArriving < 10){
@@ -513,6 +514,7 @@ void htmlparser(string time){
       } else {
         structTime = hour + ":" + minute;
       }
+      cout << time << " " << structTime << endl;
       if (time == structTime){
         html << tab << "<p class='data-clock'>" << "IN STAZIONE" << "</p>" << endl;
       } else if (htmlReady[i].hourArriving < 10 && htmlReady[i].minArriving < 10){
@@ -527,8 +529,8 @@ void htmlparser(string time){
       html << "    </div>" << endl;
     }
   }
-  html << "<div class='spacer'></div>" << endl;
   html << "  </body>" << endl;
+  html << "<footer class='spacer'>© 2019 Metropolitan Media Group Inc.</footer>" << endl;
   html << "</html>" << endl;
 }
 

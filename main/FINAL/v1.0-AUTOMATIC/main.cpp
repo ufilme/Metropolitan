@@ -470,12 +470,12 @@ void htmlparser(string time){
   string tab = "      ";
   string structTime, hour, minute;
   stringstream ss;
-  html.seekg(548, ios::beg);
+  html.seekg(522, ios::beg);
   for(int i = 0; i < 5000; i++){
     html << " " << endl;
   }
   selectionSort();
-  html.seekg(548, ios::beg);
+  html.seekg(522, ios::beg);
   for (int i = 0; i < nLines * 4; i++){
     if (htmlReady[i].sec != 0){
       html << "    <div class='data'>" << endl;
@@ -515,8 +515,8 @@ void htmlparser(string time){
       html << "    </div>" << endl;
     }
   }
-  html << "<div class='spacer'></div>" << endl;
   html << "  </body>" << endl;
+  html << "<footer class='spacer'>© 2019 Metropolitan Media Group Inc.</footer>" << endl;
   html << "</html>" << endl;
 }
 

@@ -11,6 +11,10 @@ body {
   font-family: 'highspeed', monospace;
 }
 
+::-webkit-scrollbar {
+    display: none;
+}
+
 h1{
   font-size: 900%;
   padding-left: 20%;
@@ -78,7 +82,7 @@ h1{
 .data-line{
   float: left;
   margin-top: 0px;
-  padding-right: 5%;
+  width: 10.5%;
   margin-bottom: 0px;
   background: rgba(244, 119, 33, 0.01);
 }
@@ -86,7 +90,7 @@ h1{
 .data-dir{
   float: left;
   margin-top: 0px;
-  padding-right: 12.5%;
+  width: 17%;
   margin-bottom: 0px;
   background: rgba(244, 119, 33, 0.01);
 }
@@ -95,14 +99,14 @@ h1{
   float: left;
   margin-top: 0px;
   margin-bottom: 0px;
-  padding-right: 14.5%;
+  width: 22.5%;
   background: rgba(244, 119, 33, 0.01);
 }
 
 .data-end{
   float: left;
   margin-top: 0px;
-  padding-right: 15%;
+  width: 21%;
   margin-bottom: 0px;
   background: rgba(244, 119, 33, 0.01);
 }
@@ -176,7 +180,7 @@ h1{
   .data-line{
     float: left;
     margin-top: 0px;
-    padding-right: 5%;
+    width: 11%;
     margin-bottom: 0px;
     background: rgba(244, 119, 33, 0.01);
   }
@@ -184,7 +188,7 @@ h1{
   .data-dir{
     float: left;
     margin-top: 0px;
-    padding-right: 13.5%;
+    width: 19%;
     margin-bottom: 0px;
     background: rgba(244, 119, 33, 0.01);
   }
@@ -193,14 +197,14 @@ h1{
     float: left;
     margin-top: 0px;
     margin-bottom: 0px;
-    padding-right: 16.5%;
+    width: 25%;
     background: rgba(244, 119, 33, 0.01);
   }
 
   .data-end{
     float: left;
     margin-top: 0px;
-    padding-right: 16.2%;
+    width: 23.5%;
     margin-bottom: 0px;
     background: rgba(244, 119, 33, 0.01);
   }
@@ -209,9 +213,7 @@ h1{
     float: left;
     margin-top: 0px;
     margin-bottom: 0px;
-    overflow:hidden;
-    white-space: nowrap;
-    width: 7.5%;
+    padding-right: 12%;
     background: rgba(244, 119, 33, 0.01);
   }
 }
@@ -229,6 +231,8 @@ h1{
 .spacer{
   clear: left;
   float: left;
+  margin-top: 3%;
+  margin-left: 40%;
   height: 50px;
-  width: 100%;
+  width: 50%;
 }

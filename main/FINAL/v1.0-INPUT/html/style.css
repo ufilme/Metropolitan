@@ -5,10 +5,20 @@
 
 body {
   background-color: black;
-  margin: 0px;
+  margin: auto;
   font-family: Arial;
   color: #f47721;
   font-family: 'highspeed', monospace;
+}
+
+h1{
+  font-size: 900%;
+  padding-left: 20%;
+  color: #f47721;
+}
+
+.main-title{
+  margin-top: 5%;
 }
 
 .center{
@@ -19,140 +29,189 @@ body {
 }
 
 .title{
-  clear:left;
-  margin-left: -22%;
-  margin-right: -28%;
-    font-size: 250%;
+  clear: left;
+  float:left;
+  margin-left: 9%;
+  margin-top: 5%;
+  width: 91%;
+  font-size: 250%;
 }
 
 .title-line{
-  margin-top: 5%;
   float: left;
-  width: 10.5%;
+  padding-right: 5%;
   background: rgba(244, 119, 33, 0.01);
 }
 
 .title-dir{
-  margin-top: 5%;
   float: left;
-  width: 18%;
+  padding-right: 5%;
   background: rgba(244, 119, 33, 0.01);
 }
 
 .title-start{
-  margin-top: 5%;
   float: left;
-  width: 24.7%;
+  padding-right: 5%;
   background: rgba(244, 119, 33, 0.01);
 }
 
 .title-end{
-  margin-top: 5%;
   float: left;
-  width: 23%;
+  margin-right: 5%;
   background: rgba(244, 119, 33, 0.01);
 }
 
 .title-clock{
-  margin-top: 5%;
   float: left;
-  width: 17.5%;
   background: rgba(244, 119, 33, 0.01);
 }
 
 .data{
   clear:left;
-  font-size: 140%;
-  margin-left: -22%;
-  margin-right: -28%;
+  float: left;
+  margin-top: 2%;
+  margin-left: 9%;
+  font-size: 170%;
+  width: 91%;
 }
 
 .data-line{
   float: left;
+  margin-top: 0px;
   width: 10.5%;
-  margin-top: 1%;
+  margin-bottom: 0px;
   background: rgba(244, 119, 33, 0.01);
 }
 
 .data-dir{
   float: left;
-  width: 18%;
-  margin-top: 1%;
+  margin-top: 0px;
+  width: 17%;
+  margin-bottom: 0px;
   background: rgba(244, 119, 33, 0.01);
 }
 
 .data-start{
-  width: 24.7%;
   float: left;
-  margin-top: 1%;
+  margin-top: 0px;
+  margin-bottom: 0px;
+  width: 22.5%;
   background: rgba(244, 119, 33, 0.01);
 }
 
 .data-end{
-  width: 23%;
   float: left;
-  margin-top: 1%;
+  margin-top: 0px;
+  width: 21%;
+  margin-bottom: 0px;
   background: rgba(244, 119, 33, 0.01);
 }
 
 .data-clock{
-  width: 17.5%;
   float: left;
-  margin-top: 1%;
+  margin-top: 0px;
+  margin-bottom: 0px;
+  padding-right: 12%;
   background: rgba(244, 119, 33, 0.01);
 }
 
-h1{
-  font-size: 900%;
-  color: #f47721;
-}
+@media only screen and (max-width: 1600px){
+  h1{
+    font-size: 900%;
+    padding-left: 15%;
+    color: #f47721;
+  }
 
-*,
-*::after,
-*::before {
-  margin: 0;
-  padding: 0;
-  box-sizing: inherit;
-}
+  .main-title{
+    margin-top: 5%;
+  }
 
-.container {
-  width: 10%;
-  height: 100%;
-  margin-top: 3%;
-  margin-left: 40%;
-  margin-right: 40%;
-  position: relative;
-}
+  .title{
+    clear: left;
+    float:left;
+    margin-left: 3%;
+    margin-top: 5%;
+    width: 95%;
+    font-size: 250%;
+  }
 
-.searchbar {
-  font-size: 100%;
-  width: 200%;
-  height: 1%;
-  border: none;
-  outline: none;
-  border-radius: 10rem;
-  box-shadow: 0 1rem 2rem rgba(black, .1);
-  padding: 5%;
-  position: relative;
-  transition: all .2s;
-  transition-delay: .1s;
-}
+  .title-line{
+    float: left;
+    padding-right: 5%;
+    background: rgba(244, 119, 33, 0.01);
+  }
 
-.button {
-  height: 70%;
-  position: absolute;
-  top: 10%;
-  left: 180%;
-  transition: all .2s;
-  transition-delay: .1s;
-}
+  .title-dir{
+    float: left;
+    padding-right: 5%;
+    background: rgba(244, 119, 33, 0.01);
+  }
 
-.button:hover {
-  cursor: pointer;
-}
+  .title-start{
+    float: left;
+    padding-right: 5%;
+    background: rgba(244, 119, 33, 0.01);
+  }
 
-.searchbar::placeholder {
-  opacity: .5;
+  .title-end{
+    float: left;
+    margin-right: 5%;
+    background: rgba(244, 119, 33, 0.01);
+  }
+
+  .title-clock{
+    float: left;
+    background: rgba(244, 119, 33, 0.01);
+  }
+
+  .data{
+    clear:left;
+    float: left;
+    margin-top: 2%;
+    margin-left: 3%;
+    font-size: 170%;
+    width: 95%;
+  }
+
+  .data-line{
+    float: left;
+    margin-top: 0px;
+    width: 11%;
+    margin-bottom: 0px;
+    background: rgba(244, 119, 33, 0.01);
+  }
+
+  .data-dir{
+    float: left;
+    margin-top: 0px;
+    width: 19%;
+    margin-bottom: 0px;
+    background: rgba(244, 119, 33, 0.01);
+  }
+
+  .data-start{
+    float: left;
+    margin-top: 0px;
+    margin-bottom: 0px;
+    width: 25%;
+    background: rgba(244, 119, 33, 0.01);
+  }
+
+  .data-end{
+    float: left;
+    margin-top: 0px;
+    width: 23.5%;
+    margin-bottom: 0px;
+    background: rgba(244, 119, 33, 0.01);
+  }
+
+  .data-clock{
+    float: left;
+    margin-top: 0px;
+    margin-bottom: 0px;
+    padding-right: 12%;
+    background: rgba(244, 119, 33, 0.01);
+  }
 }
 
 .noselect {
@@ -163,4 +222,13 @@ h1{
         -ms-user-select: none; /* Internet Explorer/Edge */
             user-select: none; /* Non-prefixed version, currently
                                   supported by Chrome and Opera */
+}
+
+.spacer{
+  clear: left;
+  float: left;
+  margin-top: 3%;
+  margin-left: 40%;
+  height: 50px;
+  width: 50%;
 }
