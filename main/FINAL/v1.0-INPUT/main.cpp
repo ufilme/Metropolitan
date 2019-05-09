@@ -126,8 +126,8 @@ string inizializeMainStaion(HANDLE color)
 
 void selectionSort(){
   readyToHTML tmp;
-  for (int j = 0; j < nLines*2; j++){
-    for (int i = 0; i < nLines*2; i++){
+  for (int j = 0; j < nLines*4; j++){
+    for (int i = 0; i < nLines*4; i++){
       if (htmlReady[j].sec < htmlReady[i].sec){
         tmp = htmlReady[j];
         htmlReady[j] = htmlReady[i];
@@ -484,13 +484,13 @@ void htmlparser(string time){
   string tab = "      ";
   string structTime, hour, minute;
   stringstream ss;
-  html.seekg(507, ios::beg);
-  for(int i = 0; i < 1000; i++){
+  html.seekg(548, ios::beg);
+  for(int i = 0; i < 5000; i++){
     html << " " << endl;
   }
   selectionSort();
-  html.seekg(507, ios::beg);
-  for (int i = 0; i < 8; i++){
+  html.seekg(548, ios::beg);
+  for (int i = 0; i < nLines * 4; i++){
     if (htmlReady[i].sec != 0){
       html << "    <div class='data'>" << endl;
       html << tab << "<p class='data-line'>" << htmlReady[i].line << "</p>" << endl;
@@ -527,6 +527,7 @@ void htmlparser(string time){
       html << "    </div>" << endl;
     }
   }
+  html << "<div class='spacer'></div>" << endl;
   html << "  </body>" << endl;
   html << "</html>" << endl;
 }
