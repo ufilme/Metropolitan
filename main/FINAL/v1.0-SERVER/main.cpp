@@ -48,53 +48,32 @@ struct readyToHTML{
   string direction;
 }htmlReady[nLines*4];
 
-//------------------------------------------
-//Colors
-void white(HANDLE color){
-  SetConsoleTextAttribute(color, 15);
-}
-void yellow(HANDLE color){
-  SetConsoleTextAttribute(color, 14);
-}
-void green(HANDLE color){
-  SetConsoleTextAttribute(color, 10);
-}
-void red(HANDLE color){
-  SetConsoleTextAttribute(color, 12);
-}
-//------------------------------------------
-
-void workerprint(HANDLE color){
+void workerprint(){
   cout << left << setw(2) << "[";
-  green(color);
   cout << left << setw(7) << "WORKER";
-  white(color);
   cout << "] ";
 }
 
-string inizializeMainStaion(HANDLE color)
+string inizializeMainStaion()
 {
   string line;
   int flag = 0;
   fstream file("data/main_station.txt");
   if(getline(file, line)){
     mainStation = line;
-    file.close();
   } else {
-    workerprint(color);
+    workerprint();
     cout << "Are you running the program for the first time?" << endl;
-    workerprint(color);
+    workerprint();
     cout << "You need to define your main station" << endl;
     cout << ">";
     getline(cin, line);
     ofstream file("data/main_station.txt");
     file << line;
     mainStation = line;
-    workerprint(color);
+    workerprint();
     cout << "Done" << endl;
-    file.close();
     }
-  white(color);
   return mainStation;
 }
 
@@ -143,7 +122,7 @@ void selectionSort(){
 }
 
 //subroutine that inizialize the struct with the file
-void inizializeStruct(int &errorFlag, HANDLE color){
+void inizializeStruct(int &errorFlag){
   int stationCont = 0, currentLine = 0, flag = 0;
   int lineCont = 0;
 
@@ -163,7 +142,7 @@ void inizializeStruct(int &errorFlag, HANDLE color){
     wait(150);
   }
   cout << endl;
-  workerprint(color);
+  workerprint();
   cout << "Reading File" << endl;
   ifstream file ("data/train.txt");
   while (getline (file, line)){
@@ -174,7 +153,6 @@ void inizializeStruct(int &errorFlag, HANDLE color){
     //Checking if array is smaller than the database file
     separator();
     if (currentLine > nLines){
-      red(color);
       cout << "\nTraceback:" << endl;
       wait(250);
       errorFlag = 1; //setting the errorFlag to 1 to get personalized messagge at the end of loading
@@ -182,16 +160,15 @@ void inizializeStruct(int &errorFlag, HANDLE color){
       cout << "\tThis means that not all the lines are probably loaded" << endl;
       cout << "\tCheck the file or correct the array size" << endl;
       wait(1000);
-      white(color);
       cout << "\nPress any key to continue..." << endl;
       cin.get();  //waiting for keyboard inpunt
       separator();
       break;
     }
-    workerprint(color);
+    workerprint();
     cout << "Reading Line Nr: " << currentLine << endl;
     wait(200);
-    workerprint(color);
+    workerprint();
     cout << "Loading Line Name" << endl;
     wait(50);
     //inizializing lines
@@ -199,7 +176,7 @@ void inizializeStruct(int &errorFlag, HANDLE color){
       pos = line.find('_');
       station[j + i].line = line.substr(0, pos);
     }
-    workerprint(color);
+    workerprint();
     cout << "Starting Loading of All Stations" << endl;
     wait(200);
     //inizialiazing stations
@@ -226,10 +203,10 @@ void inizializeStruct(int &errorFlag, HANDLE color){
         }
         pos++;
         posChar = line[pos];
-        workerprint(color);
+        workerprint();
         cout << "Stations Loading Ended Successfully" << endl;
         wait(50);
-        workerprint(color);
+        workerprint();
         cout << "Starting Loading of All Intervals Time" << endl;
         wait(200);
         //inizializing times
@@ -259,7 +236,7 @@ void inizializeStruct(int &errorFlag, HANDLE color){
             pos++;
           }
         }
-        workerprint(color);
+        workerprint();
         cout << "Intervals Loading Ended Successfully" << endl;
         wait(50);
         lineCont++;
@@ -468,7 +445,7 @@ void workerOutput(int &initialTimeH, int &initialTimeM){
 }
 
 void htmlparser(string time){
-  fstream html("html/index.html");
+  fstream html("/var/www/html/Metropolitan/html/index.html");
   string tab = "      ";
   string structTime, hour, minute;
   stringstream ss;
@@ -492,6 +469,7 @@ void htmlparser(string time){
       ss << htmlReady[i].minArriving;
       minute = ss.str();
       ss.str("");
+      cout << hour << minute << endl;
       if (htmlReady[i].hourArriving < 10 && htmlReady[i].minArriving < 10){
         structTime = "0" + hour + ":" + "0" + minute;
       } else if (htmlReady[i].minArriving < 10){
@@ -501,6 +479,7 @@ void htmlparser(string time){
       } else {
         structTime = hour + ":" + minute;
       }
+      cout << time << " " << structTime << endl;
       if (time == structTime){
         html << tab << "<p class='data-clock'>" << "IN STAZIONE" << "</p>" << endl;
       } else if (htmlReady[i].hourArriving < 10 && htmlReady[i].minArriving < 10){
@@ -518,7 +497,6 @@ void htmlparser(string time){
   html << "  </body>" << endl;
   html << "<footer class='spacer'>© 2019 Metropolitan Media Group Inc.</footer>" << endl;
   html << "</html>" << endl;
-  html.close();
 }
 
 void getCurrentTime(int &initialTimeH, int &initialTimeM, string &midnight){
@@ -549,70 +527,54 @@ int main(){
   int errorFlag = 0, updateTime = 5, controlFlag = 0, exitFlag = 0, flag = 0;
   int initialTimeH, initialTimeM;
   string input, time;
-  HANDLE  color = GetStdHandle(STD_OUTPUT_HANDLE);
 
-  mainStation = inizializeMainStaion(color);
+  mainStation = inizializeMainStaion();
 
   inizializeToZero();
   //checkfiles(errorFlag, color);
   if (errorFlag == 404){
     cout << left << setw(2) << "[";
-    red(color);
     cout << left << setw(7) << "ERROR";
-    white(color);
     cout << "]";
-    red(color);
     cout <<" Fatal Error" << endl;
-    white(color);
     cout << left << setw(2) << "[";
-    red(color);
     cout << left << setw(7) << "ERROR";
-    white(color);
     cout << "]";
-    red(color);
     cout << " Impossible to Continue" << endl;
-    white(color);
     cout << "\nPress any key to close..." << endl;
     cin.get();
     exit(EXIT_FAILURE);
   }
-  inizializeStruct(errorFlag, color);
+  inizializeStruct(errorFlag);
   if (errorFlag == 1){
     cout << left << setw(2) << "[";
-    yellow(color);
     cout << left << setw(7) << "WARN";
-    white(color);
     cout << "] One or more errors occurred" << endl;
     cout << left << setw(2) << "[";
-    yellow(color);
     cout << left << setw(7) << "WARN";
-    white(color);
     cout << "] It's recommended to check the files" << endl;
     separator();
-    workerprint(color);
+    workerprint();
     cout << "Closing File" << endl;
-    workerprint(color);
+    workerprint();
     cout << "Anyway... Loading Finished" << endl;
     separator();
     wait(2000);
   } else {
     separator();
-    workerprint(color);
+    workerprint();
     cout << "Closing File" << endl;
-    workerprint(color);
+    workerprint();
     cout << "Loading Finished Successfully" << endl;
     separator();
     wait(2000);
   }
-  white(color);
 
   clrscr();
 
   getCurrentTime(initialTimeH, initialTimeM, time);
   workerOutput(initialTimeH, initialTimeM);
   htmlparser(time);
-
-  system("cd html & index.html");
 
   while (controlFlag == 0){
 

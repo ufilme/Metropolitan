@@ -11,6 +11,10 @@ body {
   font-family: 'highspeed', monospace;
 }
 
+::-webkit-scrollbar {
+    display: none;
+}
+
 h1{
   font-size: 900%;
   padding-left: 20%;
@@ -115,6 +119,16 @@ h1{
   background: rgba(244, 119, 33, 0.01);
 }
 
+.spacer{
+  clear: left;
+  float: left;
+  margin-top: 3%;
+  margin-left: 37%;
+  height: 50px;
+  width: 50%;
+  font-size: 150%;
+}
+
 @media only screen and (max-width: 1600px){
   h1{
     font-size: 900%;
@@ -212,6 +226,16 @@ h1{
     padding-right: 12%;
     background: rgba(244, 119, 33, 0.01);
   }
+
+.spacer{
+  clear: left;
+  float: left;
+  margin-top: 3%;
+  margin-left: 35%;
+  height: 50px;
+  width: 50%;
+  font-size: 150%;
+}
 }
 
 .noselect {
@@ -222,13 +246,4 @@ h1{
         -ms-user-select: none; /* Internet Explorer/Edge */
             user-select: none; /* Non-prefixed version, currently
                                   supported by Chrome and Opera */
-}
-
-.spacer{
-  clear: left;
-  float: left;
-  margin-top: 3%;
-  margin-left: 40%;
-  height: 50px;
-  width: 50%;
 }

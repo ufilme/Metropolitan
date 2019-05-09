@@ -484,12 +484,12 @@ void htmlparser(string time){
   string tab = "      ";
   string structTime, hour, minute;
   stringstream ss;
-  html.seekg(522, ios::beg);
+  html.seekg(567, ios::beg);
   for(int i = 0; i < 5000; i++){
     html << " " << endl;
   }
   selectionSort();
-  html.seekg(522, ios::beg);
+  html.seekg(567, ios::beg);
   for (int i = 0; i < nLines * 4; i++){
     if (htmlReady[i].sec != 0){
       html << "    <div class='data'>" << endl;
@@ -555,9 +555,11 @@ void userinput(int &initialTimeH, int &initialTimeM, HANDLE color){
       stringstream(tmp) >> initialTimeM;
       tmp.clear();
 
-      if (initialTimeH >= 0 && initialTimeH <= 24){
-        if (initialTimeM >= 0 && initialTimeM <= 59){
-          flag = 1;
+      if(input[2] < '0' || input[2] > '9'){
+        if (initialTimeH >= 0 && initialTimeH <= 24){
+          if (initialTimeM >= 0 && initialTimeM <= 59){
+            flag = 1;
+          }
         }
       }
     }
