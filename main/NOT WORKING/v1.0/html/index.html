@@ -6,15 +6,35 @@
     <link rel="stylesheet" type="text/css" href="style.css">
     <title>Metropolitan</title>
   </head>
-  <body  class="center">
+  <body  class="center" onLoad="write()">
 
     <h1>METROPOLITAN</h1>
     <div class="container">
+        <input type="text" name="input" id="input" placeholder="Search for times..." class="searchbar"/>
+        <img src="https://images-na.ssl-images-amazon.com/images/I/41gYkruZM2L.png" class="button" onclick="WriteToFile()"/>
+    </div>
+    <script>
+    import System.IO;
+    import System;
+    function ie_writeFile(){
 
-        <input type="text" name="input" id="Input" placeholder="Search..." class="searchbar"/>
-        <img src="https://images-na.ssl-images-amazon.com/images/I/41gYkruZM2L.png" type="submit" name="submit" class="button"/>
+    var fso, fileHandle;
+      fso = new ActiveXObject("Scripting.FileSystemObject");
+      fileHandle = fso.CreateTextFile(fname, true);
+      fileHandle.write(data);
+      fileHandle.close();
 
-  </div>
+    }
+
+    function write(){
+      var s = "ciao";
+
+      ie_writeFile("input.txt", s);
+    }
+
+    write();
+
+    </script>
   <div class="title">
     <p class="line">LINEA</p>
     <p class="line">DIREZIONE</p>
