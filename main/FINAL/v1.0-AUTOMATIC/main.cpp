@@ -612,7 +612,7 @@ int main(){
   workerOutput(initialTimeH, initialTimeM);
   htmlparser(time);
 
-  system("cd html & index.html");
+  system("cd html && index.html");
 
   while (controlFlag == 0){
 
