@@ -480,16 +480,16 @@ void workerOutput(int &initialTimeH, int &initialTimeM){
 }
 
 void htmlparser(string time){
-  fstream html("html/index.html");
+  fstream html("index.html");
   string tab = "      ";
   string structTime, hour, minute;
   stringstream ss;
-  html.seekg(567, ios::beg);
+  html.seekg(572, ios::beg);
   for(int i = 0; i < 5000; i++){
     html << " " << endl;
   }
   selectionSort();
-  html.seekg(567, ios::beg);
+  html.seekg(572, ios::beg);
   for (int i = 0; i < nLines * 4; i++){
     if (htmlReady[i].sec != 0){
       html << "    <div class='data'>" << endl;
@@ -658,7 +658,7 @@ int main(){
   workerOutput(initialTimeH, initialTimeM);
   htmlparser(time);
 
-  system("cd html && index.html");
+  ShellExecute(NULL, "open", "index.html", NULL, NULL, SW_SHOWDEFAULT);
 
   while (controlFlag == 0){
 
