@@ -16,27 +16,20 @@ body {
 }
 
 h1{
-  font-size: 900%;
-  padding-left: 20%;
+  font-size: 700%;
+  padding-left: 5%;
   color: #f47721;
 }
 
 .main-title{
-  margin-top: 5%;
-}
-
-.center{
-  position: absolute;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%);
+  margin-top: 15%;
 }
 
 .title{
   clear: left;
   float:left;
-  margin-left: 9%;
-  margin-top: 5%;
+  margin-left: 8%;
+  margin-top: 3%;
   width: 91%;
   font-size: 250%;
 }
@@ -55,6 +48,7 @@ h1{
 
 .title-start{
   float: left;
+  display: none;
   padding-right: 5%;
   background: rgba(244, 119, 33, 0.01);
 }
@@ -74,7 +68,7 @@ h1{
   clear:left;
   float: left;
   margin-top: 2%;
-  margin-left: 9%;
+  margin-left: 8%;
   font-size: 170%;
   width: 91%;
 }
@@ -82,7 +76,7 @@ h1{
 .data-line{
   float: left;
   margin-top: 0px;
-  width: 10.5%;
+  width: 15.5%;
   margin-bottom: 0px;
   background: rgba(244, 119, 33, 0.01);
 }
@@ -90,7 +84,7 @@ h1{
 .data-dir{
   float: left;
   margin-top: 0px;
-  width: 17%;
+  width: 28.5%;
   margin-bottom: 0px;
   background: rgba(244, 119, 33, 0.01);
 }
@@ -99,14 +93,15 @@ h1{
   float: left;
   margin-top: 0px;
   margin-bottom: 0px;
-  width: 22.5%;
+  display: none;
+  width: 25%;
   background: rgba(244, 119, 33, 0.01);
 }
 
 .data-end{
   float: left;
   margin-top: 0px;
-  width: 21%;
+  width: 37%;
   margin-bottom: 0px;
   background: rgba(244, 119, 33, 0.01);
 }
@@ -115,18 +110,18 @@ h1{
   float: left;
   margin-top: 0px;
   margin-bottom: 0px;
-  padding-right: 12%;
+  padding-right: 10%;
   background: rgba(244, 119, 33, 0.01);
 }
 
 .spacer{
-  clear: left;
-  float: left;
-  margin-top: 3%;
-  margin-left: 37%;
-  height: 50px;
-  width: 50%;
-  font-size: 150%;
+clear: left;
+float: left;
+margin-top: 8%;
+margin-left: 23%;
+height: 50px;
+width: 70%;
+font-size: 150%;
 }
 
 .noselect {
