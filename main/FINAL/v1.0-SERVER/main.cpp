@@ -449,12 +449,12 @@ void htmlparser(string time){
   string tab = "      ";
   string structTime, hour, minute;
   stringstream ss;
-  html.seekg(852, ios::beg);
+  html.seekg(963, ios::beg);
   for(int i = 0; i < 5000; i++){
     html << " " << endl;
   }
   selectionSort();
-  html.seekg(852, ios::beg);
+  html.seekg(963, ios::beg);
   for (int i = 0; i < nLines * 4; i++){
     if (htmlReady[i].sec != 0){
       html << "    <div class='data'>" << endl;
