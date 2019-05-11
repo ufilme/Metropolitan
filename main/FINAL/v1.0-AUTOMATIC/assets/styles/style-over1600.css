@@ -1,6 +1,6 @@
 @font-face {
   font-family: 'highspeed';
-  src: url('font.TTF');
+  src: url('../fonts/font.TTF');
 }
 
 body {
@@ -16,20 +16,27 @@ body {
 }
 
 h1{
-  font-size: 700%;
-  padding-left: 5%;
+  font-size: 900%;
+  padding-left: 20%;
   color: #f47721;
 }
 
 .main-title{
-  margin-top: 15%;
+  margin-top: 5%;
+}
+
+.center{
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
 }
 
 .title{
   clear: left;
   float:left;
-  margin-left: 8%;
-  margin-top: 3%;
+  margin-left: 14%;
+  margin-top: 5%;
   width: 91%;
   font-size: 250%;
 }
@@ -48,14 +55,13 @@ h1{
 
 .title-start{
   float: left;
-  display: none;
   padding-right: 5%;
   background: rgba(244, 119, 33, 0.01);
 }
 
 .title-end{
   float: left;
-  margin-right: 5%;
+  padding-right: 5%;
   background: rgba(244, 119, 33, 0.01);
 }
 
@@ -68,7 +74,7 @@ h1{
   clear:left;
   float: left;
   margin-top: 2%;
-  margin-left: 8%;
+  margin-left: 14%;
   font-size: 170%;
   width: 91%;
 }
@@ -76,7 +82,7 @@ h1{
 .data-line{
   float: left;
   margin-top: 0px;
-  width: 15.5%;
+  width: 10.3%;
   margin-bottom: 0px;
   background: rgba(244, 119, 33, 0.01);
 }
@@ -84,7 +90,7 @@ h1{
 .data-dir{
   float: left;
   margin-top: 0px;
-  width: 28.5%;
+  width: 17%;
   margin-bottom: 0px;
   background: rgba(244, 119, 33, 0.01);
 }
@@ -93,15 +99,14 @@ h1{
   float: left;
   margin-top: 0px;
   margin-bottom: 0px;
-  display: none;
-  width: 25%;
+  width: 22.5%;
   background: rgba(244, 119, 33, 0.01);
 }
 
 .data-end{
   float: left;
   margin-top: 0px;
-  width: 37%;
+  width: 21%;
   margin-bottom: 0px;
   background: rgba(244, 119, 33, 0.01);
 }
@@ -110,18 +115,18 @@ h1{
   float: left;
   margin-top: 0px;
   margin-bottom: 0px;
-  padding-right: 10%;
+  padding-right: 1%;
   background: rgba(244, 119, 33, 0.01);
 }
 
 .spacer{
-clear: left;
-float: left;
-margin-top: 8%;
-margin-left: 23%;
-height: 50px;
-width: 70%;
-font-size: 150%;
+  clear: left;
+  float: left;
+  margin-top: 3%;
+  margin-left: 35%;
+  height: 50px;
+  width: 50%;
+  font-size: 150%;
 }
 
 .noselect {
