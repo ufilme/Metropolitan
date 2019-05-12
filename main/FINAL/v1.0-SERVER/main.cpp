@@ -445,16 +445,16 @@ void workerOutput(int &initialTimeH, int &initialTimeM){
 }
 
 void htmlparser(string time){
-  fstream html("/var/www/html/Metropolitan/html/index.html");
+  fstream html("/path/to/server/files/index.html");
   string tab = "      ";
   string structTime, hour, minute;
   stringstream ss;
-  html.seekg(963, ios::beg);
+  html.seekg(951, ios::beg);
   for(int i = 0; i < 5000; i++){
     html << " " << endl;
   }
   selectionSort();
-  html.seekg(963, ios::beg);
+  html.seekg(951, ios::beg);
   for (int i = 0; i < nLines * 4; i++){
     if (htmlReady[i].sec != 0){
       html << "    <div class='data'>" << endl;
